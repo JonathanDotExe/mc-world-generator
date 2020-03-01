@@ -30,11 +30,10 @@ public abstract class AbstractGenerator extends ChunkGenerator implements ValueG
 				double heightNoise = generator.getHeightNoise(totalX, totalZ);
 				
 				CustomBiome biome = system.getBiome(totalX, totalZ);
-				if (generator.canPopulate(totalX, totalZ)) {
-					grid.setBiome(i, j, biome.generate(data, i, j, startHeight, height, heightNoise, random));
-				}
-				else {
-					grid.setBiome(i, j, Biome.THE_VOID);
+				Biome b = generator.canPopulate(totalX, totalZ) ? biome.generate(data, i, j, startHeight, height, heightNoise, random) : Biome.THE_VOID;
+				
+				for (int k = 0; k < 256; k++) {
+					grid.setBiome(i, k, j, b);
 				}
 			}
 		}
