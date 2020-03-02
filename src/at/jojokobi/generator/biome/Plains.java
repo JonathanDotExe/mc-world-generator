@@ -11,10 +11,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import at.jojokobi.generator.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Plains extends CustomBiome{
+public class Plains implements CustomBiome{
 
 	public Plains() {
-		super(0.1, 0.3, 0.4, 0.7, 0.3, 0.6);
+//		super(0.1, 0.3, 0.4, 0.7, 0.3, 0.6);
 	}
 
 	@Override

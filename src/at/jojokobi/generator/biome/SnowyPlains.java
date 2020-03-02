@@ -11,10 +11,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import at.jojokobi.generator.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class SnowyPlains extends CustomBiome{
+public class SnowyPlains implements CustomBiome{
 
 	public SnowyPlains() {
-		super(0, 0.2, 0.0, 0.4, 0.2, 0.6);
+//		super(0, 0.2, 0.0, 0.4, 0.2, 0.6);
 	}
 
 	@Override

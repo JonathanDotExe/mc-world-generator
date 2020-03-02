@@ -14,12 +14,12 @@ import org.bukkit.util.noise.SimplexNoiseGenerator;
 import at.jojokobi.generator.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Jungle extends CustomBiome{
+public class Jungle implements CustomBiome{
 	
 	private static final TreeType[] TREE_TYPES = {TreeType.JUNGLE_BUSH, TreeType.COCOA_TREE, TreeType.SMALL_JUNGLE, TreeType.SMALL_JUNGLE, TreeType.TREE};
 
 	public Jungle() {
-		super(0.1, 0.3, 0.7, 1.0, 0.7, 1.1);
+//		super(0.1, 0.3, 0.7, 1.0, 0.7, 1.1);
 	}
 
 	@Override

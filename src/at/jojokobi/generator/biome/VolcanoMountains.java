@@ -9,10 +9,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.ValueGenerator;
 
-public class VolcanoMountains extends CustomBiome{
+public class VolcanoMountains implements CustomBiome{
 
 	public VolcanoMountains() {
-		super(0.5, 1, 0.7, 1.0, 0.2, 0.5);
+//		super(0.5, 1, 0.7, 1.0, 0.2, 0.5);
 	}
 
 	@Override

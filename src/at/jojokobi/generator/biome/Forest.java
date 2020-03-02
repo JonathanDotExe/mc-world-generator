@@ -12,12 +12,12 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import at.jojokobi.generator.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Forest extends CustomBiome{
+public class Forest implements CustomBiome{
 	
 	private static final TreeType[] TREE_TYPES = {TreeType.TREE, TreeType.TREE, TreeType.TREE, TreeType.BIG_TREE, TreeType.BIRCH, TreeType.DARK_OAK};
 
 	public Forest() {
-		super(0.1, 0.3, 0.4, 0.7, 0.4, 0.7);
+//		super(0.1, 0.3, 0.4, 0.7, 0.4, 0.7);
 	}
 
 	@Override

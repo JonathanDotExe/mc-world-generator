@@ -10,10 +10,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import at.jojokobi.generator.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Desert extends CustomBiome {
+public class Desert implements CustomBiome{
 
 	public Desert() {
-		super(0, 0.3, 0.5, 1.5, 0.0, 0.5);
+//		super(0, 0.3, 0.5, 1.5, 0.0, 0.5);
 	}
 
 	@Override

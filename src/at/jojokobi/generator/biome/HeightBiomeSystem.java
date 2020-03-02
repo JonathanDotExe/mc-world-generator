@@ -7,7 +7,7 @@ import at.jojokobi.generator.ValueGenerator;
 
 public class HeightBiomeSystem implements BiomeSystem {
 	
-	private List<CustomBiome> biomes = new ArrayList<CustomBiome> ();
+	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
 
 	private ValueGenerator generator;
 
@@ -16,8 +16,7 @@ public class HeightBiomeSystem implements BiomeSystem {
 		this.generator = generator;
 	}
 
-	@Override
-	public void registerBiome(CustomBiome biome) {
+	public void registerBiome(BiomeEntry biome) {
 		biomes.add(biome);
 	}
 
@@ -28,15 +27,15 @@ public class HeightBiomeSystem implements BiomeSystem {
 		double height = generator.getHeightNoise(x, z);
 		
 		double difference = 0;
-		CustomBiome biome = null;
-		for (CustomBiome b : biomes) {
+		BiomeEntry biome = null;
+		for (BiomeEntry b : biomes) {
 			double temp = b.getDifference(height, temperature, moisture);
 			if (biome == null || temp < difference) {
 				biome = b;
 				difference = temp;
 			}
 		}
-		return biome;
+		return biome.getBiome();
 	}
 	
 }

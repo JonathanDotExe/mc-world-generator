@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import at.jojokobi.generator.biome.ArcticOcean;
+import at.jojokobi.generator.biome.BiomeEntry;
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.Desert;
 import at.jojokobi.generator.biome.Forest;
@@ -158,16 +159,16 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(long seed) {
-		BiomeSystem system = new HeightBiomeSystem(createValueGenerator(seed));
-		system.registerBiome(new Plains());
-		system.registerBiome(new Desert());
-		system.registerBiome(new Mountains());
-		system.registerBiome(new Ocean());
-		system.registerBiome(new VolcanoMountains());
-		system.registerBiome(new SnowyPlains());
-		system.registerBiome(new Forest());
-		system.registerBiome(new ArcticOcean());
-		system.registerBiome(new Jungle());
+		HeightBiomeSystem system = new HeightBiomeSystem(createValueGenerator(seed));
+		system.registerBiome(new BiomeEntry(new Plains(), 0.1, 0.3, 0.4, 0.7, 0.3, 0.6));
+		system.registerBiome(new BiomeEntry(new Desert(), 0, 0.3, 0.5, 1.5, 0.0, 0.5));
+		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 0.8, 0.2, 0.5, 0.3, 0.5));
+		system.registerBiome(new BiomeEntry(new Ocean(), -0.5, 0, 0.4, 0.6, 0.2, 0.8));
+		system.registerBiome(new BiomeEntry(new VolcanoMountains(), 0.5, 1, 0.7, 1.0, 0.2, 0.5));
+		system.registerBiome(new BiomeEntry(new SnowyPlains(), 0, 0.2, 0.0, 0.4, 0.2, 0.6));
+		system.registerBiome(new BiomeEntry(new Forest(), 0.1, 0.3, 0.4, 0.7, 0.4, 0.7));
+		system.registerBiome(new BiomeEntry(new ArcticOcean(), -0.7, -0.1, 0.0, 0.4, 0.0, 0.5));
+		system.registerBiome(new BiomeEntry(new Jungle(), 0.1, 0.3, 0.7, 1.0, 0.7, 1.1));
 		return system;
 	}
 	

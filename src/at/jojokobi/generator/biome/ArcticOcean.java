@@ -9,10 +9,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.ValueGenerator;
 
-public class ArcticOcean extends CustomBiome{
+public class ArcticOcean implements CustomBiome{
 
 	public ArcticOcean() {
-		super(-0.7, -0.1, 0.0, 0.4, 0.0, 0.5);
+//		super(-0.7, -0.1, 0.0, 0.4, 0.0, 0.5);
 	}
 
 	@Override
