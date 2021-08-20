@@ -2,21 +2,22 @@ package at.jojokobi.generator;
 
 import java.util.Random;
 
-import org.bukkit.World;
-import org.bukkit.block.Biome;
+import org.bukkit.HeightMap;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.CustomBiome;
 
+//FIXME min and max heights from info
 public abstract class AbstractGenerator extends ChunkGenerator implements ValueGeneratorBuilder, BiomeSystemBuilder{
 
 	public static final int CHUNK_SIZE = 16;
 	public static final int WATER_HEIGHT = 64;
 	
 	@Override
-	public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid grid) {
-		ChunkData data = createChunkData(world);
+	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
 		ValueGenerator generator = createValueGenerator(world.getSeed());
 		BiomeSystem system = createBiomeSystem(world.getSeed());
 		
@@ -30,15 +31,22 @@ public abstract class AbstractGenerator extends ChunkGenerator implements ValueG
 				double heightNoise = generator.getHeightNoise(totalX, totalZ);
 				
 				CustomBiome biome = system.getBiome(totalX, totalZ);
-				Biome b = generator.canPopulate(totalX, totalZ) ? biome.generate(data, i, j, startHeight, height, heightNoise, random) : Biome.THE_VOID;
-				
-				for (int k = 0; k < 256; k++) {
-					grid.setBiome(i, k, j, b);
+				if (generator.canPopulate(totalX, totalZ)) {
+					biome.generate(data, i, j, startHeight, height, heightNoise, random);
 				}
 			}
 		}
-		return data;
 	}
 	
+	@Override
+	public int getBaseHeight(WorldInfo world, Random random, int x, int z, HeightMap heightMap) {
+		ValueGenerator generator = createValueGenerator(world.getSeed());
+		return generator.getHeight(x, z);
+	}
+	
+	@Override
+	public BiomeProvider getDefaultBiomeProvider(WorldInfo world) {
+		return createBiomeSystem(world.getSeed());
+	}
 	
 }

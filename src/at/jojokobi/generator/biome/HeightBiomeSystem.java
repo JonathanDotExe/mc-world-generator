@@ -1,7 +1,11 @@
 package at.jojokobi.generator.biome;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.bukkit.block.Biome;
+import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.ValueGenerator;
 
@@ -36,6 +40,18 @@ public class HeightBiomeSystem extends BiomeSystem {
 			}
 		}
 		return biome.getBiome();
+	}
+	
+	@Override
+	public Biome getBiome(WorldInfo info, int x, int y, int z) {
+		double heightNoise = generator.getHeightNoise(x, z);
+		int height = generator.getHeight(x, z);
+		return getBiome(x, z).getBiome(x, y, z, height, heightNoise);
+	}
+
+	@Override
+	public List<Biome> getBiomes(WorldInfo info) {
+		return Arrays.asList(Biome.values());
 	}
 	
 }
