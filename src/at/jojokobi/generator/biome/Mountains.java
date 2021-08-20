@@ -18,7 +18,7 @@ public class Mountains implements CustomBiome{
 	}
 
 	@Override
-	public Biome generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		
 		for (int y = startHeight; y < height; y++) {
 			if (noiseHeight < 0.6 && y == height - 1) {
@@ -41,9 +41,12 @@ public class Mountains implements CustomBiome{
 		else if (height > 90 && random.nextBoolean()) {
 			data.setBlock(x, height, z, Material.SNOW);
 		}
-		
+	}
+	
+	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return height > 90 ? Biome.MOUNTAINS : Biome.MOUNTAIN_EDGE;
 	}
+	
 	
 	@Override
 	public void populate(Chunk chunk, ValueGenerator generator, Random random) {

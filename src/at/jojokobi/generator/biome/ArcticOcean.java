@@ -16,7 +16,7 @@ public class ArcticOcean implements CustomBiome{
 	}
 
 	@Override
-	public Biome generate(ChunkData data, int x, int z, int startHeight, int height, double heightNoise, Random random) {
+	public void generate(ChunkData data, int x, int z, int startHeight, int height, double heightNoise, Random random) {
 		
 		for (int y = startHeight; y < height; y++) {
 			if (y >= height - 5) {
@@ -33,8 +33,10 @@ public class ArcticOcean implements CustomBiome{
 				data.setBlock(x, 64 + y, z, Material.ICE);
 			}
 		}
-		
-		return heightNoise >= 0 ? Biome.BEACH : (height < 0.2 ? Biome.ICE_SPIKES : Biome.COLD_OCEAN);
+	}
+	
+	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
+		return heightNoise >= 0 ? Biome.BEACH : (heightNoise < 0.2 ? Biome.ICE_SPIKES : Biome.COLD_OCEAN);
 	}
 
 	@Override

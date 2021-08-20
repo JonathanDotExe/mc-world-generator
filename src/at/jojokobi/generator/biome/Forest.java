@@ -21,7 +21,7 @@ public class Forest implements CustomBiome{
 	}
 
 	@Override
-	public Biome generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		
 		for (int y = startHeight; y < height; y++) {
 			if (y == height - 1) {
@@ -34,7 +34,9 @@ public class Forest implements CustomBiome{
 				data.setBlock(x, y, z, Material.STONE);
 			}
 		}
+	}
 		
+	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return Biome.FOREST;
 	}
 	

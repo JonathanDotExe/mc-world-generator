@@ -5,7 +5,7 @@ import java.util.List;
 
 import at.jojokobi.generator.ValueGenerator;
 
-public class HeightBiomeSystem implements BiomeSystem {
+public class HeightBiomeSystem extends BiomeSystem {
 	
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
 
