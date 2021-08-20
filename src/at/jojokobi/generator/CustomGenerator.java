@@ -7,6 +7,7 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.ArcticOcean;
 import at.jojokobi.generator.biome.BiomeEntry;
@@ -32,51 +33,15 @@ public class CustomGenerator extends AbstractGenerator{
 	}
 	
 	@Override
-	public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid grid) {
-		ChunkData data = super.generateChunkData(world, random, x, z, grid);
-//		SimplexNoiseGenerator generator = new SimplexNoiseGenerator(world.getSeed());
-//		SimplexNoiseGenerator generator2 = new SimplexNoiseGenerator(world.getSeed() + 469);
-//		SimplexNoiseGenerator generator3 = new SimplexNoiseGenerator(world.getSeed() - 89);
-//		ValueGenerator generator = createValueGenerator(world.getSeed());
-//		NoiseGenerator caveGen = new SimplexNoiseGenerator(world.getSeed() + 486);
-		
-//		double[][][] caveNoises = generateCaveNoises(caveGen, x * CHUNK_SIZE, z * CHUNK_SIZE);
-		
+	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
-//				int totalX = x*CHUNK_SIZE + i;
-//				int totalZ = z*CHUNK_SIZE + j;
-				//Calc Height
-//				double noise = (0.5 + generator.noise(totalX*0.005, totalZ*0.005)*0.5) ;
-//				double noise2 = (0.5 + generator2.noise(totalX*0.005, totalZ*0.005)*0.5);
-//				double noise3 = (0.5 + generator3.noise(totalX*0.005, totalZ*0.005)*0.5);
-				
-//				int startHeight = generator.getStartHeight(totalX, totalZ);
-//				int height = generator.getHeight(totalX, totalZ);
-//				
-//				CustomBiome biome = system.getBiome(totalX, totalZ);
-//				if (startHeight < height) {
-//					grid.setBiome(i, j, biome.generate(data, i, j, startHeight, height, random));
-//				}
-//				else {
-//					grid.setBiome(i, j, Biome.THE_VOID);
-//				}
 				//Generate Water
 				for (int y = 0; y < WATER_HEIGHT; y++) {
 					if (data.getType(i, y, j) == Material.AIR) {
 						data.setBlock(i, y, j, Material.WATER);
 					}
 				}
-//				//Generate caves
-//				for (int y = 0; y < data.getMaxHeight(); y++) {
-//					if (data.getType(i, y, j).isSolid() && caveNoises[i][y][j] < -0.5
-//							&& (caveNoises[Math.max(0, i - 4)][y][j] < -0.7
-//							||  caveNoises[Math.min(TerrainGenUtil.CHUNK_WIDTH - 1, i + 4)][y][j] < -0.7
-//							||  caveNoises[i][y][Math.max(0, j - 4)] < -0.7
-//							||  caveNoises[i][y][Math.min(TerrainGenUtil.CHUNK_LENGTH - 1, j + 4)] < -0.7)) {
-//						data.setBlock(i, y, j, Material.CAVE_AIR);
-//					}
-//				}
 				//Generate Lava
 				for (int y = 0; y < 11; y++) {
 					if (data.getType(i, y, j) == Material.CAVE_AIR) {
@@ -87,48 +52,6 @@ public class CustomGenerator extends AbstractGenerator{
 				data.setBlock(i, 0, j, Material.BEDROCK);
 			}
 		}
-		/*		SimplexNoiseGenerator generator = new SimplexNoiseGenerator(world.getSeed());
-		SimplexNoiseGenerator generator2 = new SimplexNoiseGenerator(world.getSeed()+654);
-		SimplexNoiseGenerator generator3 = new SimplexNoiseGenerator(world.getSeed()-44);
-		BiomeSystemOld system = new BiomeSystemOld(world.getSeed());
-		double topLeft = getBiomeMultiplier(system.getBiome(x*CHUNK_SIZE, z*CHUNK_SIZE));
-		double topRight = getBiomeMultiplier(system.getBiome((x + 1)*CHUNK_SIZE - 1, z*CHUNK_SIZE));
-		double bottomLeft = getBiomeMultiplier(system.getBiome(x*CHUNK_SIZE, (z + 1)*CHUNK_SIZE - 1));
-		double bottomRight = getBiomeMultiplier(system.getBiome((x + 1)*CHUNK_SIZE - 1, (z + 1)*CHUNK_SIZE - 1));
-		for (int i = 0; i < CHUNK_SIZE; i++) {
-			for (int j = 0; j < CHUNK_SIZE; j++) {
-				biome.setBiome(i, j, system.getBiome(x*CHUNK_SIZE + i, z*CHUNK_SIZE + j));
-				//Calc Height
-				double noise = 0.5 + generator.noise((CHUNK_SIZE*x + i)*0.01, (CHUNK_SIZE*z + j)*0.01)*0.5;
-				noise += 0.5 + generator2.noise((CHUNK_SIZE*x + i)*0.01, (CHUNK_SIZE*z + j)*0.01)*0.5;
-				noise += 0.5 + generator3.noise((CHUNK_SIZE*x + i)*0.01, (CHUNK_SIZE*z + j)*0.01)*0.5;
-				noise /= 3;
-				//Interpolate
-				double top = interpolate(topLeft, topRight, (double)i/CHUNK_SIZE);
-				double bottom = interpolate(bottomLeft, bottomRight, (double)i/CHUNK_SIZE);
-				
-				int height = WATER_HEIGHT + (int) Math.round(noise * interpolate(top, bottom, (double)j/CHUNK_SIZE));
-				//Place Blocks
-				Material ground = getBiomeGround(system.getBiome(x*CHUNK_SIZE + i, z*CHUNK_SIZE + j));
-				Material surface = getBiomeSurface(system.getBiome(x*CHUNK_SIZE + i, z*CHUNK_SIZE + j));
-				data.setBlock(i, 0, j, Material.BEDROCK);
-				for (int k = 1; k < Math.max(WATER_HEIGHT, height); k++) {
-					if (k < height - 5) {
-						data.setBlock(i, k, j, Material.STONE);
-					}
-					else if (k < height - 1) {
-						data.setBlock(i, k, j, ground);
-					}
-					else if (k >= height) {
-						data.setBlock(i, k, j, Material.WATER);
-					}
-					else {
-						data.setBlock(i, k, j, surface);
-					}
-				}
-			}
-		}*/
-		return data;
 	}
 	
 //	private double[][][] generateCaveNoises (NoiseGenerator caveGen, int totalX, int totalZ) {
