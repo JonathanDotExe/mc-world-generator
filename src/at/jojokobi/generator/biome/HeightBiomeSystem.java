@@ -46,7 +46,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 	public Biome getBiome(WorldInfo info, int x, int y, int z) {
 		double heightNoise = generator.getHeightNoise(x, z);
 		int height = generator.getHeight(x, z);
-		return getBiome(x, z).getBiome(x, y, z, height, heightNoise);
+		return generator.canPopulate(x, z) ? getBiome(x, z).getBiome(x, y, z, height, heightNoise) : Biome.THE_VOID;
 	}
 
 	@Override
