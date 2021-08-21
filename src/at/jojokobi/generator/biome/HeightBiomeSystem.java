@@ -14,6 +14,13 @@ public class HeightBiomeSystem extends BiomeSystem {
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
 
 	private ValueGenerator generator;
+	
+	private static final List<Biome> BIOMES = new ArrayList<>();
+	
+	static {
+		BIOMES.addAll(Arrays.asList(Biome.values()));
+		BIOMES.remove(Biome.CUSTOM);
+	}
 
 	public HeightBiomeSystem(ValueGenerator generator) {
 		super();
@@ -51,7 +58,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 
 	@Override
 	public List<Biome> getBiomes(WorldInfo info) {
-		return Arrays.asList(Biome.values());
+		return BIOMES;
 	}
 	
 }
