@@ -1,6 +1,9 @@
 package at.jojokobi.generator;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.HeightMap;
 import org.bukkit.generator.BiomeProvider;
@@ -15,6 +18,8 @@ public abstract class AbstractGenerator extends ChunkGenerator implements ValueG
 
 	public static final int CHUNK_SIZE = 16;
 	public static final int WATER_HEIGHT = 64;
+	
+	private Map<UUID, BiomeSystem> systems = new HashMap<UUID, BiomeSystem>();
 	
 	@Override
 	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
@@ -36,6 +41,13 @@ public abstract class AbstractGenerator extends ChunkGenerator implements ValueG
 				}
 			}
 		}
+	}
+	
+	public BiomeSystem getBiomeSystem(WorldInfo world) {
+		if (!systems.containsKey(world.getUID())) {
+			systems.put(world.getUID(), createBiomeSystem(world.getSeed()));
+		}
+		return systems.get(world.getUID());
 	}
 	
 	@Override
