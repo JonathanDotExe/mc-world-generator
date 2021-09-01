@@ -10,10 +10,8 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
-import at.jojokobi.generator.BiomeSystemBuilder;
-import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
-import at.jojokobi.generator.biome.ValueGeneratorBuilder;
+import at.jojokobi.generator.AbstractGenerator;
+import at.jojokobi.generator.biome.biomes.BiomeGenerator;
 import at.jojokobi.generator.biome.biomes.BiomeSystem;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
@@ -22,12 +20,12 @@ public class BiomePopulator extends BlockPopulator {
 	private Set<ChunkLocation> chunks = new HashSet<>();
 	private Set<ChunkLocation> unpopulated = new HashSet<>();
 
-	private BiomeSystemBuilder biomeBuilder;
+	private AbstractGenerator generator;
 
-	public BiomePopulator(BiomeSystemBuilder biomeBuilder) {
+
+	public BiomePopulator(AbstractGenerator generator) {
 		super();
-		this.builder = builder;
-		this.biomeBuilder = biomeBuilder;
+		this.generator = generator;
 	}
 
 	@Override
@@ -45,15 +43,10 @@ public class BiomePopulator extends BlockPopulator {
 	}
 
 	private void doPopulate(World world, Random random, Chunk chunk) {
-		ValueGenerator generator = builder.createValueGenerator(world.getSeed());
-		BiomeSystem system = biomeBuilder.createBiomeSystem(world.getSeed());
-
-		if (generator.canPopulate(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
-				chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH)) {
-			CustomBiome biome = system.getBiome(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
-					chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH);
-			biome.populate(chunk, generator, random);
-		}
+		BiomeSystem system = generator.getBiomeSystem(world);
+		BiomeGenerator biome = system.getBiome(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
+				chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH);
+		biome.populate(chunk, random);
 	}
 
 }
@@ -85,7 +78,7 @@ class ChunkLocation {
 //		return world.isChunkGenerated(x, z);
 //	}
 
-	public boolean canPopulate(Set<ChunkLocation> chunks) {
+	public boolean canPopulate(Set<ChunkLocation> chunks) { //FIXME
 		return chunks.containsAll(Arrays.asList(getRelative(-1, -1), getRelative(0, -1), getRelative(1, -1),
 				getRelative(-1, 0), getRelative(0, 0), getRelative(1, 0), getRelative(-1, 1), getRelative(0, 1),
 				getRelative(1, 1)));
