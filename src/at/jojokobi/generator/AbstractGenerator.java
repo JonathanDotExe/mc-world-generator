@@ -30,7 +30,7 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 				int totalZ = z*CHUNK_SIZE + j;
 				//Calc Height
 				BiomeGenerator biome = system.getBiome(totalX, totalZ);
-				biome.generateNoise(data, i, j);
+				biome.generateNoise(data, i, j, random);
 			}
 		}
 	}
@@ -45,7 +45,7 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 				int totalZ = z*CHUNK_SIZE + j;
 				//Calc Height
 				BiomeGenerator biome = system.getBiome(totalX, totalZ);
-				biome.generateSurface(data, i, j);
+				biome.generateSurface(data, i, j, random);
 			}
 		}
 	}

@@ -8,10 +8,12 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 public interface CustomBiome {
 	
-	public abstract void generate (ChunkData data, int x, int z, int startHeight, int height, double heightNoise, Random random);
+	public abstract void generateNoise (ChunkData data, int x, int z, int startHeight, int height, Random random);
 	
-	public abstract Biome getBiome(int x, int y, int z, int height, double heightNoise);
+	public abstract void generateSurface (ChunkData data, int x, int z, int startHeight, int height, Random random);
 	
-	public abstract void populate (Chunk chunk, ValueGenerator generator, Random random);
+	public abstract Biome getBiome(int x, int y, int z, int height);
+	
+	public abstract void populate (Chunk chunk, Random random);
 
 }
