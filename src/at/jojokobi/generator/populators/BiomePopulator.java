@@ -11,10 +11,10 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import at.jojokobi.generator.BiomeSystemBuilder;
-import at.jojokobi.generator.ValueGenerator;
-import at.jojokobi.generator.ValueGeneratorBuilder;
-import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.ValueGenerator;
+import at.jojokobi.generator.biome.ValueGeneratorBuilder;
+import at.jojokobi.generator.biome.biomes.BiomeSystem;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class BiomePopulator extends BlockPopulator {
@@ -22,10 +22,9 @@ public class BiomePopulator extends BlockPopulator {
 	private Set<ChunkLocation> chunks = new HashSet<>();
 	private Set<ChunkLocation> unpopulated = new HashSet<>();
 
-	private ValueGeneratorBuilder builder;
 	private BiomeSystemBuilder biomeBuilder;
 
-	public BiomePopulator(ValueGeneratorBuilder builder, BiomeSystemBuilder biomeBuilder) {
+	public BiomePopulator(BiomeSystemBuilder biomeBuilder) {
 		super();
 		this.builder = builder;
 		this.biomeBuilder = biomeBuilder;

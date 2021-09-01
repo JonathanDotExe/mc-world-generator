@@ -1,4 +1,4 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.biomes;
 
 import java.util.Random;
 
@@ -6,18 +6,16 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Biome;
-import org.bukkit.block.data.type.Leaves;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Forest implements CustomBiome{
-	
-	private static final TreeType[] TREE_TYPES = {TreeType.TREE, TreeType.TREE, TreeType.TREE, TreeType.BIG_TREE, TreeType.BIRCH, TreeType.DARK_OAK};
+public class SnowyPlains implements CustomBiome{
 
-	public Forest() {
-//		super(0.1, 0.3, 0.4, 0.7, 0.4, 0.7);
+	public SnowyPlains() {
+//		super(0, 0.2, 0.0, 0.4, 0.2, 0.6);
 	}
 
 	@Override
@@ -34,24 +32,23 @@ public class Forest implements CustomBiome{
 				data.setBlock(x, y, z, Material.STONE);
 			}
 		}
-	}
 		
+		data.setBlock(x, height, z, Material.SNOW);
+	}
+	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return Biome.FOREST;
+		return Biome.ICE_SPIKES;
 	}
 	
 	@Override
 	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
 		//Trees
-		{
-			int count = random.nextInt(5);
-			for (int i = 0; i < count; i++) {
-				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
-				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
-				
-				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
-				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);
-			}
+		if (random.nextBoolean()) {
+			int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
+			int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
+			
+			int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+			chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TreeType.TREE);
 		}
 		//Bushes
 		{
@@ -61,11 +58,8 @@ public class Forest implements CustomBiome{
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
 				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
-				
-				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
-					Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();
-					leaves.setPersistent(true);
-					chunk.getBlock(x, height, z).setBlockData(leaves, false);
+				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+					chunk.getBlock(x, height, z).setType(Material.SNOW_BLOCK, false);
 				}
 			}
 		}

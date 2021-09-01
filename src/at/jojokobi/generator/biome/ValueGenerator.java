@@ -1,4 +1,4 @@
-package at.jojokobi.generator;
+package at.jojokobi.generator.biome;
 
 public interface ValueGenerator {
 	

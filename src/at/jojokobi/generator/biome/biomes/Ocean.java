@@ -1,4 +1,4 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.biomes;
 
 import java.util.Random;
 
@@ -7,22 +7,21 @@ import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.ValueGenerator;
 
-public class VolcanoMountains implements CustomBiome{
+public class Ocean implements CustomBiome{
 
-	public VolcanoMountains() {
-//		super(0.5, 1, 0.7, 1.0, 0.2, 0.5);
+	public Ocean() {
+//		super(-0.5, 0, 0.4, 0.6, 0.2, 0.8);
 	}
 
 	@Override
 	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+		
 		for (int y = startHeight; y < height; y++) {
-			//Lava
-			if (noiseHeight > 0.85) {
-				if (y < height - 3) {
-					data.setBlock(x, y, z, Material.LAVA);
-				}
+			if (y >= height - 5) {
+				data.setBlock(x, y, z, Material.SAND);
 			}
 			else {
 				data.setBlock(x, y, z, Material.STONE);
@@ -31,7 +30,7 @@ public class VolcanoMountains implements CustomBiome{
 	}
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return Biome.GRAVELLY_MOUNTAINS;
+		return height >= 64 ? Biome.BEACH : (height > 50 ? Biome.OCEAN : Biome.DEEP_OCEAN);
 	}
 
 	@Override

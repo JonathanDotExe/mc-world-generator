@@ -7,7 +7,8 @@ import java.util.List;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.biome.biomes.BiomeEntry;
+import at.jojokobi.generator.biome.biomes.BiomeSystem;
 
 public class HeightBiomeSystem extends BiomeSystem {
 	

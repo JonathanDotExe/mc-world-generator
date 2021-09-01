@@ -1,4 +1,4 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.biomes;
 
 import java.util.Random;
 
@@ -8,7 +8,8 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class Mountains implements CustomBiome{

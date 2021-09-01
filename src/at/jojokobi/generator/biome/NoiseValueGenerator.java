@@ -1,4 +1,4 @@
-package at.jojokobi.generator;
+package at.jojokobi.generator.biome;
 
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
