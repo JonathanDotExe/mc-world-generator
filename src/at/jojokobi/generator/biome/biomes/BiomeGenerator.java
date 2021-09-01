@@ -10,9 +10,11 @@ public interface BiomeGenerator {
 	
 	public int getBaseHeight();
 	
-	public void generate (ChunkData data, int x, int z);
+	public void generateNoise(ChunkData data, int x, int z);
 	
-	public void populate (Chunk chunk, Random random);
+	public void generateSurface(ChunkData data, int x, int z);
+	
+	public void populate(Chunk chunk, Random random);
 	
 	public Biome getBiome(int y);
 

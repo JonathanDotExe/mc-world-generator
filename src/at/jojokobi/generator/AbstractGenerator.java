@@ -5,13 +5,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import org.bukkit.HeightMap;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 
-import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.generator.biome.biomes.BiomeGenerator;
 import at.jojokobi.generator.biome.biomes.BiomeSystem;
 
@@ -33,7 +30,22 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 				int totalZ = z*CHUNK_SIZE + j;
 				//Calc Height
 				BiomeGenerator biome = system.getBiome(totalX, totalZ);
-				biome.generate(data, i, j);
+				biome.generateNoise(data, i, j);
+			}
+		}
+	}
+	
+	@Override
+	public void generateSurface(WorldInfo world, Random random, int x, int z, ChunkData data) {
+		BiomeSystem system = getBiomeSystem(world);
+		
+		for (int i = 0; i < CHUNK_SIZE; i++) {
+			for (int j = 0; j < CHUNK_SIZE; j++) {
+				int totalX = x*CHUNK_SIZE + i;
+				int totalZ = z*CHUNK_SIZE + j;
+				//Calc Height
+				BiomeGenerator biome = system.getBiome(totalX, totalZ);
+				biome.generateSurface(data, i, j);
 			}
 		}
 	}

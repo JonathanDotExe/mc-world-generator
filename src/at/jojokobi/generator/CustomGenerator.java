@@ -36,6 +36,13 @@ public class CustomGenerator extends AbstractGenerator{
 	
 	@Override
 	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
+		super.generateNoise(world, random, x, z, data);
+
+	}
+	
+	@Override
+	public void generateSurface(WorldInfo world, Random random, int x, int z, ChunkData data) {
+		super.generateSurface(world, random, x, z, data);
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
 				//Generate Water
@@ -50,6 +57,17 @@ public class CustomGenerator extends AbstractGenerator{
 						data.setBlock(i, y, j, Material.LAVA);
 					}
 				}
+				//Bedrock
+				data.setBlock(i, 0, j, Material.BEDROCK);
+			}
+		}
+	}
+	
+	@Override
+	public void generateBedrock(WorldInfo worldInfo, Random random, int x, int z, ChunkData data) {
+		super.generateBedrock(worldInfo, random, x, z, data);
+		for (int i = 0; i < CHUNK_SIZE; i++) {
+			for (int j = 0; j < CHUNK_SIZE; j++) {
 				//Bedrock
 				data.setBlock(i, 0, j, Material.BEDROCK);
 			}
@@ -75,11 +93,6 @@ public class CustomGenerator extends AbstractGenerator{
 	
 	public static double interpolate (double val1, double val2, double progress) {
 		return val1 * (1-progress) + val2 * progress;
-	}
-	
-	@Override
-	public ValueGenerator createValueGenerator (long seed) {
-		return new NoiseValueGenerator(seed);
 	}
 
 	@Override
