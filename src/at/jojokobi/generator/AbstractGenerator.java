@@ -1,9 +1,6 @@
 package at.jojokobi.generator;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
@@ -12,13 +9,12 @@ import org.bukkit.generator.WorldInfo;
 import at.jojokobi.generator.biome.biomes.BiomeGenerator;
 import at.jojokobi.generator.biome.biomes.BiomeSystem;
 
-//FIXME min and max heights from info
 public abstract class AbstractGenerator extends ChunkGenerator implements BiomeSystemBuilder{
 
 	public static final int CHUNK_SIZE = 16;
 	public static final int WATER_HEIGHT = 64;
 	
-	private Map<UUID, BiomeSystem> systems = new HashMap<UUID, BiomeSystem>();
+	//private Map<UUID, BiomeSystem> systems = new HashMap<UUID, BiomeSystem>();
 	
 	@Override
 	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
@@ -51,10 +47,11 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 	}
 	
 	public BiomeSystem getBiomeSystem(WorldInfo world) {
-		if (!systems.containsKey(world.getUID())) {
+		/*if (!systems.containsKey(world.getUID())) {
 			systems.put(world.getUID(), createBiomeSystem(world));
 		}
-		return systems.get(world.getUID());
+		return systems.get(world.getUID());*/
+		return createBiomeSystem(world);
 	}
 	
 	/*

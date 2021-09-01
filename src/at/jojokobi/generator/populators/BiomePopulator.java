@@ -1,8 +1,6 @@
 package at.jojokobi.generator.populators;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,8 +15,9 @@ import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class BiomePopulator extends BlockPopulator {
 
+	/*
 	private Set<ChunkLocation> chunks = new HashSet<>();
-	private Set<ChunkLocation> unpopulated = new HashSet<>();
+	private Set<ChunkLocation> unpopulated = new HashSet<>();*/
 
 	private AbstractGenerator generator;
 
@@ -30,7 +29,7 @@ public class BiomePopulator extends BlockPopulator {
 
 	@Override
 	public void populate(World world, Random random, Chunk chunk) {
-		unpopulated.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
+		/*unpopulated.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
 		chunks.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
 
 		for (Iterator<ChunkLocation> iter = unpopulated.iterator(); iter.hasNext();) {
@@ -39,7 +38,8 @@ public class BiomePopulator extends BlockPopulator {
 				doPopulate(world, random, chunkLocation.getChunk(world));
 				iter.remove();
 			}
-		}
+		}*/
+		doPopulate(world, random, chunk);
 	}
 
 	private void doPopulate(World world, Random random, Chunk chunk) {
