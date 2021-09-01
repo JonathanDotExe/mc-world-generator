@@ -9,8 +9,8 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import at.jojokobi.generator.AbstractGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class Forest implements CustomBiome{
@@ -22,7 +22,7 @@ public class Forest implements CustomBiome{
 	}
 
 	@Override
-	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		
 		for (int y = startHeight; y < height; y++) {
 			if (y == height - 1) {
@@ -36,13 +36,18 @@ public class Forest implements CustomBiome{
 			}
 		}
 	}
+	
+	@Override
+	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+
+	}
 		
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return Biome.FOREST;
 	}
 	
 	@Override
-	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
+	public void populate(Chunk chunk, Random random) {
 		//Trees
 		{
 			int count = random.nextInt(5);
@@ -50,7 +55,7 @@ public class Forest implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
 				
-				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
 				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);
 			}
 		}
@@ -61,7 +66,7 @@ public class Forest implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH );
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
-				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
 				
 				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();

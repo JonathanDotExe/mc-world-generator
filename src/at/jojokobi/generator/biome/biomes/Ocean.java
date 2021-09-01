@@ -8,7 +8,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 
 public class Ocean implements CustomBiome{
 
@@ -17,8 +16,8 @@ public class Ocean implements CustomBiome{
 	}
 
 	@Override
-	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		
+	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+
 		for (int y = startHeight; y < height; y++) {
 			if (y >= height - 5) {
 				data.setBlock(x, y, z, Material.SAND);
@@ -29,12 +28,17 @@ public class Ocean implements CustomBiome{
 		}
 	}
 	
+	@Override
+	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+		
+	}
+	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return height >= 64 ? Biome.BEACH : (height > 50 ? Biome.OCEAN : Biome.DEEP_OCEAN);
 	}
 
 	@Override
-	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
+	public void populate(Chunk chunk, Random random) {
 		
 	}
 	

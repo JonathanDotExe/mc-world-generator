@@ -53,7 +53,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 				difference = temp;
 			}
 		}
-		return new HeightBiomeGenerator(biome.getBiome(), x, z, height, startHeight);
+		return new HeightBiomeGenerator(biome.getBiome(), x, z, height, startHeight, heightNoise);
 	}
 	
 	@Override
@@ -76,14 +76,16 @@ class HeightBiomeGenerator implements BiomeGenerator {
 	private int z;
 	private int startHeight;
 	private int height;
+	private double heightNoise;
 
-	public HeightBiomeGenerator(CustomBiome biome, int x, int z, int startHeight, int height) {
+	public HeightBiomeGenerator(CustomBiome biome, int x, int z, int startHeight, int height, double heightNoise) {
 		super();
 		this.biome = biome;
 		this.x = x;
 		this.z = z;
 		this.startHeight = startHeight;
 		this.height = height;
+		this.heightNoise = heightNoise;
 	}
 
 	@Override
@@ -93,12 +95,12 @@ class HeightBiomeGenerator implements BiomeGenerator {
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, Random random) {
-		biome.generateNoise(data, x, z, startHeight, height, random);
+		biome.generateNoise(data, x, z, startHeight, height, heightNoise, random);
 	}
 
 	@Override
 	public void generateSurface(ChunkData data, int x, int z, Random random) {
-		biome.generateSurface(data, x, z, startHeight, height, random);
+		biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
 		
 	}
 
@@ -109,7 +111,7 @@ class HeightBiomeGenerator implements BiomeGenerator {
 
 	@Override
 	public Biome getBiome(int y) {
-		return biome.getBiome(x, y, z, height);
+		return biome.getBiome(x, y, z, height, heightNoise);
 	}
 	
 }

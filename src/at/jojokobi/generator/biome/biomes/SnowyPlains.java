@@ -8,8 +8,8 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import at.jojokobi.generator.AbstractGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class SnowyPlains implements CustomBiome{
@@ -19,8 +19,7 @@ public class SnowyPlains implements CustomBiome{
 	}
 
 	@Override
-	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		
+	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			if (y == height - 1) {
 				data.setBlock(x, y, z, Material.GRASS_BLOCK);
@@ -32,22 +31,26 @@ public class SnowyPlains implements CustomBiome{
 				data.setBlock(x, y, z, Material.STONE);
 			}
 		}
-		
+	}
+	
+	@Override
+	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		data.setBlock(x, height, z, Material.SNOW);
 	}
+	
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return Biome.ICE_SPIKES;
 	}
 	
 	@Override
-	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
+	public void populate(Chunk chunk, Random random) {
 		//Trees
 		if (random.nextBoolean()) {
 			int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
 			int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
 			
-			int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+			int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
 			chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TreeType.TREE);
 		}
 		//Bushes
@@ -57,7 +60,7 @@ public class SnowyPlains implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH );
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
-				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					chunk.getBlock(x, height, z).setType(Material.SNOW_BLOCK, false);
 				}

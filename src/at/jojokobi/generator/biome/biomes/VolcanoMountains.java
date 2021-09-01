@@ -8,7 +8,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 
 public class VolcanoMountains implements CustomBiome{
 
@@ -17,7 +16,22 @@ public class VolcanoMountains implements CustomBiome{
 	}
 
 	@Override
-	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+		for (int y = startHeight; y < height; y++) {
+			//Lava
+			if (noiseHeight > 0.85) {
+				if (y < height - 3) {
+					data.setBlock(x, y, z, Material.LAVA);
+				}
+			}
+			else {
+				data.setBlock(x, y, z, Material.STONE);
+			}
+		}
+	}
+	
+	@Override
+	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			//Lava
 			if (noiseHeight > 0.85) {
@@ -36,7 +50,7 @@ public class VolcanoMountains implements CustomBiome{
 	}
 
 	@Override
-	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
+	public void populate(Chunk chunk, Random random) {
 		
 	}
 	

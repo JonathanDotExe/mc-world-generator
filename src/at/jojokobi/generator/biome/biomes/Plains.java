@@ -8,8 +8,8 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import at.jojokobi.generator.AbstractGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
-import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class Plains implements CustomBiome{
@@ -19,8 +19,7 @@ public class Plains implements CustomBiome{
 	}
 
 	@Override
-	public void generate(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		
+	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			if (y == height - 1) {
 				data.setBlock(x, y, z, Material.GRASS_BLOCK);
@@ -34,16 +33,21 @@ public class Plains implements CustomBiome{
 		}
 	}
 	
+	@Override
+	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+
+	}
+	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return Biome.PLAINS;
 	}
 	
 	@Override
-	public void populate(Chunk chunk, ValueGenerator generator, Random random) {
+	public void populate(Chunk chunk, Random random) {
 		for (int x = 0; x < TerrainGenUtil.CHUNK_WIDTH; x++) {
 			for (int z = 0; z < TerrainGenUtil.CHUNK_LENGTH; z++) {
 				int chance = random.nextInt(64);
-				int height = generator.getHeight(TerrainGenUtil.CHUNK_WIDTH * chunk.getX() + x, TerrainGenUtil.CHUNK_LENGTH * chunk.getZ() + z);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
 				
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					if (chance < 20) {
