@@ -10,8 +10,6 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.HeightBiomeSystem;
-import at.jojokobi.generator.biome.NoiseValueGenerator;
-import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
 import at.jojokobi.generator.biome.biomes.BiomeEntry;
 import at.jojokobi.generator.biome.biomes.BiomeSystem;
@@ -88,7 +86,7 @@ public class CustomGenerator extends AbstractGenerator{
 	
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(World world) {
-		return Arrays.asList((BlockPopulator) new BiomePopulator(this, this),(BlockPopulator)  new OrePopulator());
+		return Arrays.asList((BlockPopulator) new BiomePopulator(this),(BlockPopulator)  new OrePopulator());
 	}
 	
 	public static double interpolate (double val1, double val2, double progress) {
@@ -96,8 +94,8 @@ public class CustomGenerator extends AbstractGenerator{
 	}
 
 	@Override
-	public BiomeSystem createBiomeSystem(long seed) {
-		HeightBiomeSystem system = new HeightBiomeSystem(createValueGenerator(seed));
+	public BiomeSystem createBiomeSystem(WorldInfo info) {
+		HeightBiomeSystem system = new HeightBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(200,  info.getMaxHeight()));
 		system.registerBiome(new BiomeEntry(new Plains(), 0.1, 0.3, 0.4, 0.7, 0.3, 0.6));
 		system.registerBiome(new BiomeEntry(new Desert(), 0, 0.3, 0.5, 1.5, 0.0, 0.5));
 		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 0.8, 0.2, 0.5, 0.3, 0.5));

@@ -52,7 +52,7 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 	
 	public BiomeSystem getBiomeSystem(WorldInfo world) {
 		if (!systems.containsKey(world.getUID())) {
-			systems.put(world.getUID(), createBiomeSystem(world.getSeed()));
+			systems.put(world.getUID(), createBiomeSystem(world));
 		}
 		return systems.get(world.getUID());
 	}

@@ -23,9 +23,9 @@ public class HeightBiomeSystem extends BiomeSystem {
 		BIOMES.remove(Biome.CUSTOM);
 	}
 
-	public HeightBiomeSystem(ValueGenerator generator) {
+	public HeightBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
-		this.generator = generator;
+		this.generator = new NoiseValueGenerator(seed, minHeight, maxHeight);
 	}
 
 	public void registerBiome(BiomeEntry biome) {

@@ -20,13 +20,12 @@ public class NoiseValueGenerator implements ValueGenerator{
 	private int seaLevel = 64;
 	private int maxHeight = 150;
 	
-	public NoiseValueGenerator(long seed) {
+	public NoiseValueGenerator(long seed, int minHeight, int maxHeight) {
+		this.minHeight = minHeight;
+		this.maxHeight = maxHeight;
 		for (int i = 0; i < heightGenerators.length; i++) {
 			heightGenerators[i] = new SimplexNoiseGenerator(seed + i * (i % 2 == 0 ? 57 : -82));
 		}
-//		heightGenerator1 = new SimplexNoiseGenerator(seed);
-//		heightGenerator2 = new SimplexNoiseGenerator(seed + 469);
-//		heightGenerator3 = new SimplexNoiseGenerator(seed - 89);
 		
 		temperatureGenerator = new SimplexNoiseGenerator(seed + 654);
 		moistureGenerator = new SimplexNoiseGenerator(seed - 44);
@@ -52,9 +51,6 @@ public class NoiseValueGenerator implements ValueGenerator{
 			noise += heightGenerators[i].noise(x*heightMultiplier*(1+i), z*heightMultiplier*(1+i)) * multiplier;
 		}
 		
-//		double noise = (0.5 + heightGenerator1.noise(x*heightMultiplier, z*heightMultiplier)*0.5) ;
-//		double noise2 = (0.5 + heightGenerator2.noise(x*heightMultiplier*2, z*heightMultiplier*2)*0.5)/2;
-//		double noise3 = (0.5 + heightGenerator3.noise(x*heightMultiplier*4, z*heightMultiplier*4)*0.5)/4;
 		return noise/multipliers;
 	}
 	
