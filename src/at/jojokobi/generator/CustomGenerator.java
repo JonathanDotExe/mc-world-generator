@@ -9,10 +9,10 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
+import at.jojokobi.generator.biome.BiomeEntry;
+import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.HeightBiomeSystem;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
-import at.jojokobi.generator.biome.biomes.BiomeEntry;
-import at.jojokobi.generator.biome.biomes.BiomeSystem;
 import at.jojokobi.generator.biome.biomes.Desert;
 import at.jojokobi.generator.biome.biomes.Forest;
 import at.jojokobi.generator.biome.biomes.Jungle;

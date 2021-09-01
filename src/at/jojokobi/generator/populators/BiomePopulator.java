@@ -9,8 +9,8 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import at.jojokobi.generator.AbstractGenerator;
-import at.jojokobi.generator.biome.biomes.BiomeGenerator;
-import at.jojokobi.generator.biome.biomes.BiomeSystem;
+import at.jojokobi.generator.biome.BiomeGenerator;
+import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class BiomePopulator extends BlockPopulator {

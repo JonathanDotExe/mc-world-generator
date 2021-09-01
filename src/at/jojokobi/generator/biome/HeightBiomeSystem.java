@@ -10,10 +10,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.biome.biomes.BiomeEntry;
-import at.jojokobi.generator.biome.biomes.BiomeGenerator;
-import at.jojokobi.generator.biome.biomes.BiomeSystem;
-
 public class HeightBiomeSystem extends BiomeSystem {
 	
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
@@ -53,7 +49,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 				difference = temp;
 			}
 		}
-		return new HeightBiomeGenerator(biome.getBiome(), x, z, height, startHeight, heightNoise);
+		return new HeightBiomeGenerator(biome.getBiome(), x, z, startHeight, height, heightNoise);
 	}
 	
 	@Override
@@ -95,18 +91,24 @@ class HeightBiomeGenerator implements BiomeGenerator {
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, Random random) {
-		biome.generateNoise(data, x, z, startHeight, height, heightNoise, random);
+		if (height > startHeight) {
+			biome.generateNoise(data, x, z, startHeight, height, heightNoise, random);
+		}
 	}
 
 	@Override
 	public void generateSurface(ChunkData data, int x, int z, Random random) {
-		biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
+		if (height > startHeight) {
+			biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
+		}
 		
 	}
 
 	@Override
 	public void populate(Chunk chunk, Random random) {
-		biome.populate(chunk, random);
+		if (height > startHeight) {
+			biome.populate(chunk, random);
+		}
 	}
 
 	@Override

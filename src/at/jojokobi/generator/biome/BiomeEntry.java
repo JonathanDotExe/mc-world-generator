@@ -1,6 +1,5 @@
-package at.jojokobi.generator.biome.biomes;
+package at.jojokobi.generator.biome;
 
-import at.jojokobi.generator.biome.CustomBiome;
 import at.jojokobi.mcutil.VectorUtil;
 
 public class BiomeEntry {

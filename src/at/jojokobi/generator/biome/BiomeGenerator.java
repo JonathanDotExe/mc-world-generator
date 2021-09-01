@@ -1,4 +1,4 @@
-package at.jojokobi.generator.biome.biomes;
+package at.jojokobi.generator.biome;
 
 import java.util.Random;
 

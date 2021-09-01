@@ -6,8 +6,8 @@ import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 
-import at.jojokobi.generator.biome.biomes.BiomeGenerator;
-import at.jojokobi.generator.biome.biomes.BiomeSystem;
+import at.jojokobi.generator.biome.BiomeGenerator;
+import at.jojokobi.generator.biome.BiomeSystem;
 
 public abstract class AbstractGenerator extends ChunkGenerator implements BiomeSystemBuilder{
 
