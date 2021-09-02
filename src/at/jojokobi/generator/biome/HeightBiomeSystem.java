@@ -25,7 +25,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 256;
+	private int gridSize = 128;
 
 	public HeightBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
@@ -49,16 +49,15 @@ public class HeightBiomeSystem extends BiomeSystem {
 		double moisture = generator.getTemperature(x, z);
 		double heightNoise = generator.getHeightNoise(x, z);
 		
-		double difference = 0;
 		BiomeEntry biome = null;
+		List<BiomeEntry> possibleBiomes = new ArrayList<>();
 		for (BiomeEntry b : biomes) {
-			double temp = b.getDifference(heightNoise, temperature, moisture);
-			if (biome == null || temp < difference) {
-				biome = b;
-				difference = temp;
+			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture() && heightNoise >= b.getMinHeight() && heightNoise <= b.getMaxHeight()) {
+				possibleBiomes.add(b);
 			}
 		}
 		
+		biome = possibleBiomes.get(random.nextInt(possibleBiomes.size()));
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
 	}
 	

@@ -96,15 +96,15 @@ public class CustomGenerator extends AbstractGenerator{
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
 		HeightBiomeSystem system = new HeightBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(200,  info.getMaxHeight()));
-		system.registerBiome(new BiomeEntry(new Plains(), 0.1, 0.3, 0.4, 0.7, 0.3, 0.6));
-		system.registerBiome(new BiomeEntry(new Desert(), 0, 0.3, 0.5, 1.5, 0.0, 0.5));
-		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 0.8, 0.2, 0.5, 0.3, 0.5));
-		system.registerBiome(new BiomeEntry(new Ocean(), -0.5, 0, 0.4, 0.6, 0.2, 0.8));
-		system.registerBiome(new BiomeEntry(new VolcanoMountains(), 0.5, 1, 0.7, 1.0, 0.2, 0.5));
-		system.registerBiome(new BiomeEntry(new SnowyPlains(), 0, 0.2, 0.0, 0.4, 0.2, 0.6));
-		system.registerBiome(new BiomeEntry(new Forest(), 0.1, 0.3, 0.4, 0.7, 0.4, 0.7));
-		system.registerBiome(new BiomeEntry(new ArcticOcean(), -0.7, -0.1, 0.0, 0.4, 0.0, 0.5));
-		system.registerBiome(new BiomeEntry(new Jungle(), 0.1, 0.3, 0.7, 1.0, 0.7, 1.1));
+		system.registerBiome(new BiomeEntry(new Plains(), 0.0, 0.4, 0.2, 0.7, 0.0, 0.6));
+		system.registerBiome(new BiomeEntry(new Desert(), 0.0, 0.6, 0.5, 1, 0.0, 0.5));
+		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 1.0, 0.0, 0.7, 0.0, 0.1));
+		system.registerBiome(new BiomeEntry(new Ocean(), -1, 0, 0.4, 1.0, 0.0, 1.0));
+		system.registerBiome(new BiomeEntry(new VolcanoMountains(), 0.6, 1, 0.6, 1.0, 0.0, 0.5));
+		system.registerBiome(new BiomeEntry(new SnowyPlains(), 0, 0.6, 0.0, 0.4, 0.0, 1.0));
+		system.registerBiome(new BiomeEntry(new Forest(), 0.1, 1, 0.4, 0.7, 0.0, 0.1));
+		system.registerBiome(new BiomeEntry(new ArcticOcean(), -1, -0.1, 0.0, 0.4, 0.0, 0.5));
+		system.registerBiome(new BiomeEntry(new Jungle(), 0.1, 0.7, 0.5, 1.0, 0.7, 1.0));
 		return system;
 	}
 	
