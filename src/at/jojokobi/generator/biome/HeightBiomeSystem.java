@@ -41,12 +41,12 @@ public class HeightBiomeSystem extends BiomeSystem {
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
 		int pointX = random.nextInt(gridSize);
 		int pointZ = random.nextInt(gridSize);
-		double pointWeight = 0.8 + 0.4 * random.nextDouble();
+		double pointWeight = 0.5 + random.nextDouble();
 		int x = gridX * gridSize + pointX;
 		int z = gridZ * gridSize + pointZ;
 		
 		double temperature = generator.getTemperature(x, z);
-		double moisture = generator.getTemperature(x, z);
+		double moisture = generator.getMoisture(x, z);
 		double heightNoise = generator.getHeightNoise(x, z);
 		
 		BiomeEntry biome = null;
@@ -55,6 +55,10 @@ public class HeightBiomeSystem extends BiomeSystem {
 			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture() && heightNoise >= b.getMinHeight() && heightNoise <= b.getMaxHeight()) {
 				possibleBiomes.add(b);
 			}
+		}
+		
+		if (possibleBiomes.isEmpty()) {
+			throw new RuntimeException("No biome found for " + heightNoise + "/" + temperature + "/" + moisture);
 		}
 		
 		biome = possibleBiomes.get(random.nextInt(possibleBiomes.size()));

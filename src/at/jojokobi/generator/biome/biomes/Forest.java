@@ -55,7 +55,7 @@ public class Forest implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
 				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);
 			}
 		}
@@ -66,7 +66,7 @@ public class Forest implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH );
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
 				
 				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();

@@ -27,9 +27,6 @@ public class Mountains implements CustomBiome{
 			else if (noiseHeight > 0.6 && y >= height - 5) {
 				data.setBlock(x, y, z, Material.DIRT);
 			}
-			else if (noiseHeight > 0.75 && y == height - 1) {
-				data.setBlock(x, y, z, Material.SNOW_BLOCK);
-			}
 			else {
 				data.setBlock(x, y, z, Material.STONE);
 			}
@@ -39,16 +36,13 @@ public class Mountains implements CustomBiome{
 	@Override
 	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		//Snow
-		if (height > 95) {
-			data.setBlock(x, height, z, Material.SNOW);
-		}
-		else if (height > 90 && random.nextBoolean()) {
+		if (noiseHeight - random.nextDouble() * 0.5 > 0.8) {
 			data.setBlock(x, height, z, Material.SNOW);
 		}
 	}
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return height > 90 ? Biome.MOUNTAINS : Biome.MOUNTAIN_EDGE;
+		return height > 120 ? Biome.MOUNTAINS : Biome.MOUNTAIN_EDGE;
 	}
 	
 	
@@ -58,8 +52,8 @@ public class Mountains implements CustomBiome{
 			int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH );
 			int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 			
-			int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
-			
+			int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+			chunk.getBlock(x, height, z).setType(Material.AIR);;
 			chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TreeType.TREE);
 		}
 	}

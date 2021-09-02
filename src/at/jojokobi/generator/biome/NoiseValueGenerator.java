@@ -46,7 +46,7 @@ public class NoiseValueGenerator implements ValueGenerator{
 		double noise = 0;
 		double multipliers = 0;
 		for (int i = 0; i < heightGenerators.length; i++) {
-			double multiplier = (1.0/(1 + i));
+			double multiplier = Math.pow(0.5, i);
 			multipliers += multiplier;
 			noise += heightGenerators[i].noise(x*heightMultiplier*(1+i), z*heightMultiplier*(1+i)) * multiplier;
 		}
