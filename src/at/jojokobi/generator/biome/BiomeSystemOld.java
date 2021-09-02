@@ -23,12 +23,12 @@ public class BiomeSystemOld {
 	}
 	
 	public BiomeCenter getBiomeForRegion (int x, int z) {
-		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, x, 1, z, 1));
+		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, x, 1, z));
 		return new BiomeCenter(Biome.values()[random.nextInt(Biome.values().length)], x*REGION_SIZE + random.nextInt(REGION_SIZE), z*REGION_SIZE + random.nextInt(REGION_SIZE));
 	}
 	
 	public BiomeCenter[] getRiversForRegion (int x, int z) {
-		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, x, 2, z, 1));
+		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, x, 2, z));
 		BiomeCenter[] rivers = new BiomeCenter[1];
 		for (int i = 0; i < rivers.length; i++) {
 			rivers[i] = new BiomeCenter(Biome.RIVER, x*REGION_SIZE + random.nextInt(REGION_SIZE), z*REGION_SIZE + random.nextInt(REGION_SIZE));
