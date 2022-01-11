@@ -15,5 +15,9 @@ public interface CustomBiome {
 	public abstract Biome getBiome(int x, int y, int z, int height, double heightNoise);
 	
 	public abstract void populate (Chunk chunk, Random random);
+	
+	public abstract double getHeightAdd() {
+		return 0.0;
+	}
 
 }
