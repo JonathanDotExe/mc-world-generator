@@ -39,7 +39,7 @@ public class Jungle implements CustomBiome{
 	}
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return height > 85 ? Biome.JUNGLE_HILLS : Biome.JUNGLE;
+		return Biome.JUNGLE;
 	}
 	
 	@Override

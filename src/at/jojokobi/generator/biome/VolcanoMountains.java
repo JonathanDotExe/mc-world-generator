@@ -31,7 +31,7 @@ public class VolcanoMountains implements CustomBiome{
 	}
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return Biome.GRAVELLY_MOUNTAINS;
+		return Biome.STONY_PEAKS;
 	}
 
 	@Override

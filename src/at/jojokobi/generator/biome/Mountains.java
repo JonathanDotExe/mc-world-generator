@@ -44,7 +44,7 @@ public class Mountains implements CustomBiome{
 	}
 	
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return height > 90 ? Biome.MOUNTAINS : Biome.MOUNTAIN_EDGE;
+		return height > 90 ? Biome.STONY_PEAKS : Biome.MEADOW;
 	}
 	
 	
