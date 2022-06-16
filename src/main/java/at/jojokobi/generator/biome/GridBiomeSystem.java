@@ -8,11 +8,13 @@ import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.noise.NoiseGenerator;
+import org.bukkit.util.noise.SimplexNoiseGenerator;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class HeightBiomeSystem extends BiomeSystem {
+public class GridBiomeSystem extends BiomeSystem {
 	
 	
 	private static final List<Biome> BIOMES = new ArrayList<>();
@@ -25,9 +27,9 @@ public class HeightBiomeSystem extends BiomeSystem {
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 128;
+	private int gridSize = 256;
 
-	public HeightBiomeSystem(long seed, int minHeight, int maxHeight) {
+	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
 		this.seed = seed;
 		this.generator = new NoiseValueGenerator(seed, minHeight, maxHeight);
@@ -61,7 +63,10 @@ public class HeightBiomeSystem extends BiomeSystem {
 			throw new RuntimeException("No biome found for " + heightNoise + "/" + temperature + "/" + moisture);
 		}
 		
-		biome = possibleBiomes.get(random.nextInt(possibleBiomes.size()));
+		NoiseGenerator gen = new SimplexNoiseGenerator(seed);
+		double factor = 0.5;
+		double noise = (gen.noise(factor * gridX, factor * gridZ) * 0.5 + 1) * 0.99999;
+		biome = possibleBiomes.get((int) (noise * (possibleBiomes.size())));
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
 	}
 	
@@ -124,13 +129,9 @@ public class HeightBiomeSystem extends BiomeSystem {
 			return pointWeight;
 		}
 
-
-
 		public void setPointWeight(double pointWeight) {
 			this.pointWeight = pointWeight;
 		}
-
-
 
 		public CustomBiome getBiome() {
 			return biome;

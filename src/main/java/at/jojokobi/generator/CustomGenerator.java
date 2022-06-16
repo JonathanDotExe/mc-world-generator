@@ -11,7 +11,7 @@ import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.BiomeEntry;
 import at.jojokobi.generator.biome.BiomeSystem;
-import at.jojokobi.generator.biome.HeightBiomeSystem;
+import at.jojokobi.generator.biome.GridBiomeSystem;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
 import at.jojokobi.generator.biome.biomes.Desert;
 import at.jojokobi.generator.biome.biomes.Forest;
@@ -67,7 +67,7 @@ public class CustomGenerator extends AbstractGenerator{
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
 				//Bedrock
-				data.setBlock(i, 0, j, Material.BEDROCK);
+				data.setBlock(i, worldInfo.getMinHeight(), j, Material.BEDROCK);
 			}
 		}
 	}
@@ -95,7 +95,7 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
-		HeightBiomeSystem system = new HeightBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
+		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
 		system.registerBiome(new BiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6, 0.0, 0.6));
 		system.registerBiome(new BiomeEntry(new Desert(), 0.0, 0.6, 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 1.0, 0.0, 0.7, 0.0, 1.0));
