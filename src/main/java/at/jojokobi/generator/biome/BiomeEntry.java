@@ -5,34 +5,28 @@ import at.jojokobi.mcutil.VectorUtil;
 public class BiomeEntry {
 	
 	private CustomBiome biome;
-	private double minHeight;
-	private double maxHeight;
 	private double minTemperature;
 	private double maxTemperature;
 	private double minMoisture;
 	private double maxMoisture;
 	
-	public BiomeEntry(CustomBiome biome, double minHeight, double maxHeight, double minTemperature,
+	public BiomeEntry(CustomBiome biome, double minTemperature,
 			double maxTemperature, double minMoisture, double maxMoisture) {
 		super();
 		this.biome = biome;
-		this.minHeight = minHeight;
-		this.maxHeight = maxHeight;
 		this.minTemperature = minTemperature;
 		this.maxTemperature = maxTemperature;
 		this.minMoisture = minMoisture;
 		this.maxMoisture = maxMoisture;
 	}
 
-	public double getDifference (double height, double temperature, double moisture) {
-		return getDifference(height, temperature, moisture, 1, 1, 1);
+	public double getDifference (double temperature, double moisture) {
+		return getDifference(temperature, moisture, 1, 1);
 	}
 	
-	public double getDifference (double height, double temperature, double moisture, double heightWeight, double temperatureWeight, double moistureWeight) {
+	public double getDifference (double temperature, double moisture, double temperatureWeight, double moistureWeight) {
 		double difference = 0;
 		
-		//Height
-		difference += calcValueDifference(minHeight, maxHeight, height) * heightWeight;
 		//Temperature
 		difference += calcValueDifference(minTemperature, maxTemperature, temperature) * temperatureWeight;
 		//Moisture
@@ -56,10 +50,6 @@ public class BiomeEntry {
 	public CustomBiome getBiome() {
 		return biome;
 	}
-
-	public double getHeight () {
-		return (minHeight + maxHeight) / 2;
-	}
 	
 	public double getTemperature () {
 		return (minTemperature + maxTemperature) / 2;
@@ -68,23 +58,7 @@ public class BiomeEntry {
 	public double getMoisture () {
 		return (minMoisture + maxMoisture) / 2;
 	}
-
-	public double getMinHeight() {
-		return minHeight;
-	}
-
-	public void setMinHeight(double minHeight) {
-		this.minHeight = minHeight;
-	}
-
-	public double getMaxHeight() {
-		return maxHeight;
-	}
-
-	public void setMaxHeight(double maxHeight) {
-		this.maxHeight = maxHeight;
-	}
-
+	
 	public double getMinTemperature() {
 		return minTemperature;
 	}

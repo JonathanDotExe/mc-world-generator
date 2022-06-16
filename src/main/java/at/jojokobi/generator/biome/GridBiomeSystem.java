@@ -62,7 +62,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		List<BiomeEntry> possibleBiomes = new ArrayList<>();
 		//Land
 		for (BiomeEntry b : biomes) {
-			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture() && heightNoise >= b.getMinHeight() && heightNoise <= b.getMaxHeight()) {
+			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture()) {
 				possibleBiomes.add(b);
 			}
 		}
