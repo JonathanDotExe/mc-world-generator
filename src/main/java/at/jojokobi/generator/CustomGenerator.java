@@ -94,16 +94,17 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
-		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(64, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
+		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
 		system.registerBiome(new BiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6, 0.0, 0.6));
 		system.registerBiome(new BiomeEntry(new Desert(), 0.0, 0.6, 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 1.0, 0.0, 0.7, 0.0, 1.0));
-		system.registerBiome(new BiomeEntry(new Ocean(), -1, 0, 0.4, 1.0, 0.0, 1.0));
 		system.registerBiome(new BiomeEntry(new VolcanoMountains(), 0.6, 1, 0.6, 1.0, 0.0, 1.0));
 		system.registerBiome(new BiomeEntry(new SnowyPlains(), 0, 0.6, 0.0, 0.6, 0.0, 1.0));
 		system.registerBiome(new BiomeEntry(new Forest(), 0.0, 1, 0.4, 0.7, 0.0, 1));
-		system.registerBiome(new BiomeEntry(new ArcticOcean(), -1, 0.0, 0.0, 0.4, 0.0, 1.0));
 		system.registerBiome(new BiomeEntry(new Jungle(), 0.0, 0.7, 0.5, 1.0, 0.5, 1.0));
+		
+		system.registerOceanBiome(new BiomeEntry(new Ocean(), -1, 0, 0.4, 1.0, 0.0, 1.0));
+		system.registerOceanBiome(new BiomeEntry(new ArcticOcean(), -1, 0.0, 0.0, 0.4, 0.0, 1.0));
 		return system;
 	}
 

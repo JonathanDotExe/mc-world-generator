@@ -25,9 +25,10 @@ public class GridBiomeSystem extends BiomeSystem {
 	}
 	
 	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
+	private List<BiomeEntry> oceanBiomes = new ArrayList<BiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 256;
+	private int gridSize = 128;
 
 	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
@@ -39,7 +40,12 @@ public class GridBiomeSystem extends BiomeSystem {
 		biomes.add(biome);
 	}
 	
-	private GridBiomePoint getGridBiome(int gridX, int gridZ) {
+	public void registerOceanBiome(BiomeEntry biome) {
+		oceanBiomes.add(biome);
+	}
+	
+	private GridBiomePoint getGridBiome(int gridX, int gridZ, List<BiomeEntry> biomes) {
+		//Point position
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
 		int pointX = random.nextInt(gridSize);
 		int pointZ = random.nextInt(gridSize);
@@ -47,12 +53,14 @@ public class GridBiomeSystem extends BiomeSystem {
 		int x = gridX * gridSize + pointX;
 		int z = gridZ * gridSize + pointZ;
 		
+		//Noise values
 		double temperature = generator.getTemperature(x, z);
 		double moisture = generator.getMoisture(x, z);
 		double heightNoise = generator.getHeightNoise(x, z);
 		
 		BiomeEntry biome = null;
 		List<BiomeEntry> possibleBiomes = new ArrayList<>();
+		//Land
 		for (BiomeEntry b : biomes) {
 			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture() && heightNoise >= b.getMinHeight() && heightNoise <= b.getMaxHeight()) {
 				possibleBiomes.add(b);
@@ -66,7 +74,6 @@ public class GridBiomeSystem extends BiomeSystem {
 		NoiseGenerator gen = new SimplexNoiseGenerator(seed);
 		double factor = 0.5;
 		double noise = (gen.noise(factor * gridX, factor * gridZ) * 0.5 + 0.5) * 0.99999;
-		//System.out.println("Noise: " + noise + "/" + (int) (noise * (possibleBiomes.size())) + "/" + possibleBiomes.size());
 		biome = possibleBiomes.get((int) (noise * (possibleBiomes.size())));
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
 	}
@@ -76,13 +83,18 @@ public class GridBiomeSystem extends BiomeSystem {
 		int gridX = (int) Math.floor((double) x/gridSize);
 		int gridZ = (int) Math.floor((double) z/gridSize);
 		
-		GridBiomePoint tl = getGridBiome(gridX, gridZ);
-		GridBiomePoint tr = getGridBiome(gridX + 1, gridZ);
-		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1);
-		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1);
+		double heightNoise = generator.getHeightNoise(x, z);
+		List<BiomeEntry> biomes = heightNoise >= 0 ? this.biomes : oceanBiomes;
+		
+		GridBiomePoint tl = getGridBiome(gridX, gridZ, biomes);
+		GridBiomePoint tr = getGridBiome(gridX + 1, gridZ, biomes);
+		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1, biomes);
+		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1, biomes);
 		
 		GridBiomePoint biome = null;
 		double distance = Double.MAX_VALUE;
+		double heightFactor = 0.0;
+		double totalDistance = 0.0;
 		for (GridBiomePoint p : Arrays.asList(tl, tr,bl, br)) {
 			double d = Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2);
 			d *= p.getPointWeight();
@@ -90,10 +102,14 @@ public class GridBiomeSystem extends BiomeSystem {
 				distance = d;
 				biome = p;
 			}
+			//Height factor
+			double dstRamp = (0.5 * gridSize)/Math.max(0.000001, d);
+			totalDistance += dstRamp;
+			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
+		heightFactor /= totalDistance;
 		
-		double heightNoise = generator.getHeightNoise(x, z);
-		int height = generator.getHeight(x, z, heightNoise * biome.getBiome().getHeightMultiplier());
+		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
 		
 		return new GridBiomeGenerator(biome.getBiome(), x, z, startHeight, height, heightNoise);
