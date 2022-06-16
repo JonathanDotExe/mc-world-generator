@@ -65,7 +65,8 @@ public class GridBiomeSystem extends BiomeSystem {
 		
 		NoiseGenerator gen = new SimplexNoiseGenerator(seed);
 		double factor = 0.5;
-		double noise = (gen.noise(factor * gridX, factor * gridZ) * 0.5 + 1) * 0.99999;
+		double noise = (gen.noise(factor * gridX, factor * gridZ) * 0.5 + 0.5) * 0.99999;
+		//System.out.println("Noise: " + noise + "/" + (int) (noise * (possibleBiomes.size())) + "/" + possibleBiomes.size());
 		biome = possibleBiomes.get((int) (noise * (possibleBiomes.size())));
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
 	}
