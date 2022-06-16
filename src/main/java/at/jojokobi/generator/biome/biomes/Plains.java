@@ -51,7 +51,7 @@ public class Plains implements CustomBiome{
 	public void populate(Chunk chunk, Random random) {
 		for (int x = 0; x < TerrainGenUtil.CHUNK_WIDTH; x++) {
 			for (int z = 0; z < TerrainGenUtil.CHUNK_LENGTH; z++) {
-				int chance = random.nextInt(64);
+				int chance = random.nextInt(128);
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
 				
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {

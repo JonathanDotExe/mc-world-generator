@@ -25,23 +25,11 @@ public class ArcticOcean implements CustomBiome{
 				data.setBlock(x, y, z, Material.STONE);
 			}
 		}
-		
-		//Ice Shards
-		if (height < 0.2) {
-			for (int y = 0; y < -heightNoise * 20; y++) {
-				data.setBlock(x, 64 + y, z, Material.ICE);
-			}
-		}
 	}
 	
 	@Override
 	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double heightNoise, Random random) {
-		//Ice Shards
-		if (heightNoise < 0.2) {
-			for (int y = 0; y < -heightNoise * 20; y++) {
-				data.setBlock(x, 64 + y, z, Material.ICE);
-			}
-		}
+		//TODO ice shards
 	}
 	
 	@Override
