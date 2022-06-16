@@ -17,6 +17,11 @@ public class SnowyPlains implements CustomBiome{
 	public SnowyPlains() {
 //		super(0, 0.2, 0.0, 0.4, 0.2, 0.6);
 	}
+	
+	@Override
+	public double getHeightMultiplier() {
+		return 0.45;
+	}
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {

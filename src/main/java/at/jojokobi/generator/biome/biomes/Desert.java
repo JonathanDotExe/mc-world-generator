@@ -16,6 +16,11 @@ public class Desert implements CustomBiome{
 	public Desert() {
 //		super(0, 0.3, 0.5, 1.5, 0.0, 0.5);
 	}
+	
+	@Override
+	public double getHeightMultiplier() {
+		return 0.8;
+	}
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {

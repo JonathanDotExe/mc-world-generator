@@ -8,14 +8,14 @@ public interface ValueGenerator {
 	
 	public double getHeightNoise (double x, double z);
 	
-	public int getHeight (double x, double z);
+	public int getHeight (double x, double z, double noise);
 	
 	public default int getStartHeight (double x, double z) {
 		return 0;
 	}
 
-	public default boolean canPopulate (double x, double z) {
-		return getHeight(x, z) > getStartHeight(x, z);
+	public default boolean canPopulate (double x, double z, double noise) {
+		return getHeight(x, z, noise) > getStartHeight(x, z);
 	}
 	
 }

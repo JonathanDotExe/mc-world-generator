@@ -73,10 +73,6 @@ public class GridBiomeSystem extends BiomeSystem {
 	
 	@Override
 	public BiomeGenerator getBiome(int x, int z) {
-		int height = generator.getHeight(x, z);
-		int startHeight = generator.getStartHeight(x, z);
-		double heightNoise = generator.getHeightNoise(x, z);
-		
 		int gridX = (int) Math.floor((double) x/gridSize);
 		int gridZ = (int) Math.floor((double) z/gridSize);
 		
@@ -95,6 +91,10 @@ public class GridBiomeSystem extends BiomeSystem {
 				biome = p;
 			}
 		}
+		
+		double heightNoise = generator.getHeightNoise(x, z);
+		int height = generator.getHeight(x, z, heightNoise * biome.getBiome().getHeightMultiplier());
+		int startHeight = generator.getStartHeight(x, z);
 		
 		return new GridBiomeGenerator(biome.getBiome(), x, z, startHeight, height, heightNoise);
 	}

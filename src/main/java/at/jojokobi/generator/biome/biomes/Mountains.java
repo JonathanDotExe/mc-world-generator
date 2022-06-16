@@ -17,6 +17,11 @@ public class Mountains implements CustomBiome{
 	public Mountains() {
 //		super(0.4, 0.8, 0.2, 0.5, 0.3, 0.5);
 	}
+	
+	@Override
+	public double getHeightMultiplier() {
+		return 1.3;
+	}
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {

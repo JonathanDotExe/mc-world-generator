@@ -19,6 +19,11 @@ public class Plains implements CustomBiome{
 	}
 
 	@Override
+	public double getHeightMultiplier() {
+		return 0.3;
+	}
+	
+	@Override
 	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			if (y == height - 1) {

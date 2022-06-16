@@ -55,9 +55,7 @@ public class NoiseValueGenerator implements ValueGenerator{
 	}
 	
 	@Override
-	public int getHeight (double x, double z) {
-		double noise = getHeightNoise(x, z);
-		
+	public int getHeight (double x, double z, double noise) {
 		int height = 0;
 		if (noise < 0) {
 			height = (int) Math.round(VectorUtil.interpolate(minHeight, seaLevel, 1 + noise));

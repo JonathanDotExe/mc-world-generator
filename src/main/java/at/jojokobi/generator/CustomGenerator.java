@@ -35,7 +35,6 @@ public class CustomGenerator extends AbstractGenerator{
 	@Override
 	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
 		super.generateNoise(world, random, x, z, data);
-
 	}
 	
 	@Override
@@ -95,7 +94,7 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
-		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
+		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(64, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
 		system.registerBiome(new BiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6, 0.0, 0.6));
 		system.registerBiome(new BiomeEntry(new Desert(), 0.0, 0.6, 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new BiomeEntry(new Mountains(), 0.4, 1.0, 0.0, 0.7, 0.0, 1.0));
@@ -107,112 +106,5 @@ public class CustomGenerator extends AbstractGenerator{
 		system.registerBiome(new BiomeEntry(new Jungle(), 0.0, 0.7, 0.5, 1.0, 0.5, 1.0));
 		return system;
 	}
-	
-//	public static double getBiomeMultiplier (Biome biome) {
-//		double multiplier = 20;
-//		switch (biome) {
-//		case PLAINS:
-//		case MUTATED_PLAINS:
-//		case SAVANNA:
-//		case MUTATED_SAVANNA:
-//		case SWAMPLAND:
-//		case MUTATED_SWAMPLAND:
-//			multiplier = 5;
-//			break;
-//		case EXTREME_HILLS:
-//		case MUTATED_EXTREME_HILLS:
-//			multiplier = 100;
-//			break;
-//		case FOREST_HILLS:
-//		case BIRCH_FOREST_HILLS:
-//		case MUTATED_BIRCH_FOREST_HILLS:
-//		case DESERT_HILLS:
-//			multiplier = 30;
-//			break;
-//		case MESA:
-//		case MESA_CLEAR_ROCK:
-//		case MESA_ROCK:
-//		case MUTATED_MESA:
-//		case MUTATED_MESA_CLEAR_ROCK:
-//		case MUTATED_MESA_ROCK:
-//			multiplier = 60;
-//			break;
-//		case RIVER:
-//		case FROZEN_RIVER:
-//			multiplier = -7;
-//		case OCEAN: 
-//		case FROZEN_OCEAN:
-//			multiplier = -30;
-//		case DEEP_OCEAN:
-//			multiplier = -40;
-//
-//		default:
-//			break;
-//		}
-//		return multiplier;
-//	}
-	
-//	public static Material getBiomeSurface (Biome biome) {
-//		Material ground = Material.GRASS;
-//		switch (biome) {
-//		case EXTREME_HILLS:
-//		case MUTATED_EXTREME_HILLS:
-//			ground = Material.STONE;
-//			break;
-//		case DESERT:
-//		case DESERT_HILLS:
-//		case MUTATED_DESERT:
-//			ground = Material.SAND;
-//			break;
-//		case OCEAN:
-//		case DEEP_OCEAN:
-//			ground = Material.SAND;
-//			break;
-//		case RIVER:
-//			ground = Material.SAND;
-//			break;
-//		case FROZEN_RIVER:
-//		case FROZEN_OCEAN:
-//			ground = Material.ICE;
-//			break;
-//		case MUSHROOM_ISLAND:
-//		case MUSHROOM_ISLAND_SHORE:
-//			ground = Material.MYCEL;
-//			break;
-//		case MUTATED_ICE_FLATS:
-//			ground = Material.SNOW_BLOCK;
-//			break;
-//
-//		default:
-//			break;
-//		}
-//		return ground;
-//	}
-	
-	
-//	public static Material getBiomeGround (Biome biome) {
-//		Material ground = Material.DIRT;
-//		switch (biome) {
-//		case EXTREME_HILLS:
-//		case MUTATED_EXTREME_HILLS:
-//			ground = Material.STONE;
-//			break;
-//		case DESERT:
-//			ground = Material.SAND;
-//			break;
-//		case OCEAN:
-//		case DEEP_OCEAN:
-//		case FROZEN_OCEAN:
-//			ground = Material.SAND;
-//			break;
-//		case RIVER:
-//		case FROZEN_RIVER:
-//			ground = Material.SAND;
-//			break;
-//		default:
-//			break;
-//		}
-//		return ground;
-//	}
 
 }
