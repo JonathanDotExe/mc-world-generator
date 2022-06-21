@@ -1,4 +1,4 @@
-package at.jojokobi.generator;
+package at.jojokobi.generator.noise;
 
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
@@ -7,14 +7,14 @@ import at.jojokobi.mcutil.VectorUtil;
 
 public class NoiseValueGenerator implements ValueGenerator{
 	
-	private NoiseGenerator[] heightGenerators = new NoiseGenerator[5];
+	private NoiseGenerator[] heightGenerators = new NoiseGenerator[8];
 	
 	private NoiseGenerator temperatureGenerator;
 	private NoiseGenerator moistureGenerator;
 	
-	private double heightMultiplier = 0.0025;
-	private double temperatureMultiplier = 0.001;
-	private double moistureMultiplier = 0.001;
+	private double heightMultiplier = 0.001;
+	private double temperatureMultiplier = 0.0005;
+	private double moistureMultiplier = 0.0005;
 	
 	private int minHeight = 10;
 	private int seaLevel = 64;

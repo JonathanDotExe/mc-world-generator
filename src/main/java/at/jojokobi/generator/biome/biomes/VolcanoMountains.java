@@ -1,4 +1,4 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.biomes;
 
 import java.util.Random;
 
@@ -7,7 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.noise.ValueGenerator;
 
 public class VolcanoMountains implements CustomBiome{
 

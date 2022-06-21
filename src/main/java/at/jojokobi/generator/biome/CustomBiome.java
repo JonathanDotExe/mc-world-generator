@@ -6,7 +6,7 @@ import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.noise.ValueGenerator;
 
 public interface CustomBiome {
 	

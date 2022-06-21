@@ -2,7 +2,7 @@ package at.jojokobi.generator.biome;
 
 import at.jojokobi.mcutil.VectorUtil;
 
-public class BiomeEntry {
+public class HeightBiomeEntry {
 	
 	private CustomBiome biome;
 	private double minHeight;
@@ -11,9 +11,10 @@ public class BiomeEntry {
 	private double maxTemperature;
 	private double minMoisture;
 	private double maxMoisture;
+	private long seed;
 	
-	public BiomeEntry(CustomBiome biome, double minHeight, double maxHeight, double minTemperature,
-			double maxTemperature, double minMoisture, double maxMoisture) {
+	public HeightBiomeEntry(CustomBiome biome, double minHeight, double maxHeight, double minTemperature,
+			double maxTemperature, double minMoisture, double maxMoisture, long seed) {
 		super();
 		this.biome = biome;
 		this.minHeight = minHeight;
@@ -22,6 +23,7 @@ public class BiomeEntry {
 		this.maxTemperature = maxTemperature;
 		this.minMoisture = minMoisture;
 		this.maxMoisture = maxMoisture;
+		this.seed = seed;
 	}
 
 	public double getDifference (double height, double temperature, double moisture) {
@@ -115,6 +117,18 @@ public class BiomeEntry {
 
 	public void setMaxMoisture(double maxMoisture) {
 		this.maxMoisture = maxMoisture;
+	}
+
+	public long getSeed() {
+		return seed;
+	}
+
+	public void setSeed(long seed) {
+		this.seed = seed;
+	}
+
+	public void setBiome(CustomBiome biome) {
+		this.biome = biome;
 	}
 
 }

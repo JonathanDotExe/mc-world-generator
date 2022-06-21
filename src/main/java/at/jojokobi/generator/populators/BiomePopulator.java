@@ -11,10 +11,10 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import at.jojokobi.generator.BiomeSystemBuilder;
-import at.jojokobi.generator.ValueGenerator;
-import at.jojokobi.generator.ValueGeneratorBuilder;
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.noise.ValueGenerator;
+import at.jojokobi.generator.noise.ValueGeneratorBuilder;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class BiomePopulator extends BlockPopulator {

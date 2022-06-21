@@ -9,6 +9,8 @@ import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.noise.ValueGenerator;
+import at.jojokobi.generator.noise.ValueGeneratorBuilder;
 
 //FIXME min and max heights from info
 public abstract class AbstractGenerator extends ChunkGenerator implements ValueGeneratorBuilder, BiomeSystemBuilder{

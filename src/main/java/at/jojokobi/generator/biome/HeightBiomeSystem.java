@@ -7,11 +7,11 @@ import java.util.List;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
 
-import at.jojokobi.generator.ValueGenerator;
+import at.jojokobi.generator.noise.ValueGenerator;
 
 public class HeightBiomeSystem extends BiomeSystem {
 	
-	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
+	private List<HeightBiomeEntry> biomes = new ArrayList<HeightBiomeEntry> ();
 
 	private ValueGenerator generator;
 	
@@ -27,7 +27,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 		this.generator = generator;
 	}
 
-	public void registerBiome(BiomeEntry biome) {
+	public void registerBiome(HeightBiomeEntry biome) {
 		biomes.add(biome);
 	}
 
@@ -38,8 +38,8 @@ public class HeightBiomeSystem extends BiomeSystem {
 		double height = generator.getHeightNoise(x, z);
 		
 		double difference = 0;
-		BiomeEntry biome = null;
-		for (BiomeEntry b : biomes) {
+		HeightBiomeEntry biome = null;
+		for (HeightBiomeEntry b : biomes) {
 			double temp = b.getDifference(height, temperature, moisture);
 			if (biome == null || temp < difference) {
 				biome = b;
