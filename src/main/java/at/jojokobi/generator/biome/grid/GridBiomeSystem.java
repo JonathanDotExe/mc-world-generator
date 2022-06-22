@@ -152,7 +152,7 @@ public class GridBiomeSystem extends BiomeSystem {
 				biome = p;
 			}
 			//Height factor
-			double dstRamp = (0.25 * gridSize)/Math.max(0.000001, d);
+			double dstRamp = (0.25 * gridSize)/Math.max(0.000001, Math.sqrt(d)); //TODO remove sqrt
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
