@@ -76,19 +76,18 @@ public class GridBiomeSystem extends BiomeSystem {
 	
 	private GridBiomePoint createGridBiome(int gridX, int gridZ, boolean ocean) {
 		//Biomes list
-		List<GridBiomeEntry> biomes = ocean ? this.biomes : oceanBiomes;
+		List<GridBiomeEntry> biomes = ocean ? this.oceanBiomes : this.biomes;
 		//Point position
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
 		int pointX = random.nextInt(gridSize);
 		int pointZ = random.nextInt(gridSize);
-		double pointWeight = 0.5 + random.nextDouble();
+		double pointWeight = /*0.5 + random.nextDouble()*/ 1;
 		int x = gridX * gridSize + pointX;
 		int z = gridZ * gridSize + pointZ;
 		
 		//Noise values
 		double temperature = generator.getTemperature(x, z);
 		double moisture = generator.getMoisture(x, z);
-		double heightNoise = generator.getHeightNoise(x, z);
 		
 		GridBiomeEntry biome = null;
 		List<GridBiomeEntry> possibleBiomes = new ArrayList<>();
@@ -100,7 +99,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		}
 		
 		if (possibleBiomes.isEmpty()) {
-			throw new RuntimeException("No biome found for " + heightNoise + "/" + temperature + "/" + moisture);
+			throw new RuntimeException("No biome found for " + temperature + "/" + moisture);
 		}
 		
 		NoiseGenerator gen = new SimplexNoiseGenerator(seed);
@@ -124,7 +123,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		int gridZ = (int) Math.floor((double) z/gridSize);
 		
 		double heightNoise = generator.getHeightNoise(x, z);
-		boolean ocean = heightNoise >= 0;
+		boolean ocean = heightNoise <= 0;
 		
 		//Get biomes around
 		GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);

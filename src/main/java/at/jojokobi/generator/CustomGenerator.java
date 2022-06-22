@@ -99,7 +99,7 @@ public class CustomGenerator extends AbstractGenerator{
 		system.registerBiome(new GridBiomeEntry(new Desert(), 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new GridBiomeEntry(new Mountains(), 0.0, 0.7, 0.0, 0.8));
 		system.registerBiome(new GridBiomeEntry(new VolcanoMountains(), 0.6, 1.0, 0.0, 0.5));
-		system.registerBiome(new GridBiomeEntry(new SnowyPlains(), 0.0, 0.4, 0.3, 1.0));
+		system.registerBiome(new GridBiomeEntry(new SnowyPlains(), 0.0, 0.5, 0.3, 1.0));
 		system.registerBiome(new GridBiomeEntry(new Forest(), 0.4, 0.7, 0.2, 0.7));
 		system.registerBiome(new GridBiomeEntry(new Jungle(), 0.5, 1.0, 0.5, 1.0));
 		
