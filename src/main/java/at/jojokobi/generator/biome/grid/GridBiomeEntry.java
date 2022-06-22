@@ -1,8 +1,9 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.grid;
 
+import at.jojokobi.generator.biome.CustomBiome;
 import at.jojokobi.mcutil.VectorUtil;
 
-public class BiomeEntry {
+public class GridBiomeEntry {
 	
 	private CustomBiome biome;
 	private double minTemperature;
@@ -10,7 +11,7 @@ public class BiomeEntry {
 	private double minMoisture;
 	private double maxMoisture;
 	
-	public BiomeEntry(CustomBiome biome, double minTemperature,
+	public GridBiomeEntry(CustomBiome biome, double minTemperature,
 			double maxTemperature, double minMoisture, double maxMoisture) {
 		super();
 		this.biome = biome;

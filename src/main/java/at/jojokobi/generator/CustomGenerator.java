@@ -9,9 +9,7 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
-import at.jojokobi.generator.biome.BiomeEntry;
 import at.jojokobi.generator.biome.BiomeSystem;
-import at.jojokobi.generator.biome.GridBiomeSystem;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
 import at.jojokobi.generator.biome.biomes.Desert;
 import at.jojokobi.generator.biome.biomes.Forest;
@@ -21,6 +19,8 @@ import at.jojokobi.generator.biome.biomes.Ocean;
 import at.jojokobi.generator.biome.biomes.Plains;
 import at.jojokobi.generator.biome.biomes.SnowyPlains;
 import at.jojokobi.generator.biome.biomes.VolcanoMountains;
+import at.jojokobi.generator.biome.grid.GridBiomeEntry;
+import at.jojokobi.generator.biome.grid.GridBiomeSystem;
 import at.jojokobi.generator.populators.BiomePopulator;
 import at.jojokobi.generator.populators.ore.OrePopulator;
 
@@ -94,17 +94,17 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
-		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight()));
-		system.registerBiome(new BiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6));
-		system.registerBiome(new BiomeEntry(new Desert(), 0.5, 1, 0.0, 0.5));
-		system.registerBiome(new BiomeEntry(new Mountains(), 0.0, 0.7, 0.0, 0.8));
-		system.registerBiome(new BiomeEntry(new VolcanoMountains(), 0.6, 1.0, 0.0, 0.5));
-		system.registerBiome(new BiomeEntry(new SnowyPlains(), 0.0, 0.4, 0.3, 1.0));
-		system.registerBiome(new BiomeEntry(new Forest(), 0.4, 0.7, 0.2, 0.7));
-		system.registerBiome(new BiomeEntry(new Jungle(), 0.5, 1.0, 0.5, 1.0));
+		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(130,  info.getMaxHeight()));
+		system.registerBiome(new GridBiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6));
+		system.registerBiome(new GridBiomeEntry(new Desert(), 0.5, 1, 0.0, 0.5));
+		system.registerBiome(new GridBiomeEntry(new Mountains(), 0.0, 0.7, 0.0, 0.8));
+		system.registerBiome(new GridBiomeEntry(new VolcanoMountains(), 0.6, 1.0, 0.0, 0.5));
+		system.registerBiome(new GridBiomeEntry(new SnowyPlains(), 0.0, 0.4, 0.3, 1.0));
+		system.registerBiome(new GridBiomeEntry(new Forest(), 0.4, 0.7, 0.2, 0.7));
+		system.registerBiome(new GridBiomeEntry(new Jungle(), 0.5, 1.0, 0.5, 1.0));
 		
-		system.registerOceanBiome(new BiomeEntry(new Ocean(), 0.0, 1.0, 0.0, 1.0));
-		system.registerOceanBiome(new BiomeEntry(new ArcticOcean(), 0.0, 0.4, 0.0, 1.0));
+		system.registerOceanBiome(new GridBiomeEntry(new Ocean(), 0.0, 1.0, 0.0, 1.0));
+		system.registerOceanBiome(new GridBiomeEntry(new ArcticOcean(), 0.0, 0.4, 0.0, 1.0));
 		return system;
 	}
 

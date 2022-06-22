@@ -1,17 +1,25 @@
-package at.jojokobi.generator.biome;
+package at.jojokobi.generator.biome.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
-import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
-import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
+import at.jojokobi.generator.biome.BiomeGenerator;
+import at.jojokobi.generator.biome.BiomeSystem;
+import at.jojokobi.generator.biome.NoiseValueGenerator;
+import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class GridBiomeSystem extends BiomeSystem {
@@ -24,27 +32,41 @@ public class GridBiomeSystem extends BiomeSystem {
 		BIOMES.remove(Biome.CUSTOM);
 	}
 	
-	private List<BiomeEntry> biomes = new ArrayList<BiomeEntry> ();
-	private List<BiomeEntry> oceanBiomes = new ArrayList<BiomeEntry> ();
+	private List<GridBiomeEntry> biomes = new ArrayList<GridBiomeEntry> ();
+	private List<GridBiomeEntry> oceanBiomes = new ArrayList<GridBiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 128;
+	private int gridSize = 256;
+	
+	//Cahce for saving already generated biomes
+	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
 
 	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
 		this.seed = seed;
 		this.generator = new NoiseValueGenerator(seed, minHeight, maxHeight);
+		this.biomeCache = CacheBuilder.newBuilder()
+				.maximumSize(10000)
+				.expireAfterAccess(3, TimeUnit.MINUTES)
+				.build(new CacheLoader<GridBiomeCacheKey, GridBiomePoint>() {
+					@Override
+					public GridBiomePoint load(GridBiomeCacheKey key) throws Exception {
+						return createGridBiome(key.getGridX(), key.getGridZ(), key.isOcean());
+					}
+				});
 	}
 
-	public void registerBiome(BiomeEntry biome) {
+	public void registerBiome(GridBiomeEntry biome) {
 		biomes.add(biome);
 	}
 	
-	public void registerOceanBiome(BiomeEntry biome) {
+	public void registerOceanBiome(GridBiomeEntry biome) {
 		oceanBiomes.add(biome);
 	}
 	
-	private GridBiomePoint getGridBiome(int gridX, int gridZ, List<BiomeEntry> biomes) {
+	private GridBiomePoint createGridBiome(int gridX, int gridZ, boolean ocean) {
+		//Biomes list
+		List<GridBiomeEntry> biomes = ocean ? this.biomes : oceanBiomes;
 		//Point position
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
 		int pointX = random.nextInt(gridSize);
@@ -58,10 +80,10 @@ public class GridBiomeSystem extends BiomeSystem {
 		double moisture = generator.getMoisture(x, z);
 		double heightNoise = generator.getHeightNoise(x, z);
 		
-		BiomeEntry biome = null;
-		List<BiomeEntry> possibleBiomes = new ArrayList<>();
+		GridBiomeEntry biome = null;
+		List<GridBiomeEntry> possibleBiomes = new ArrayList<>();
 		//Land
-		for (BiomeEntry b : biomes) {
+		for (GridBiomeEntry b : biomes) {
 			if (temperature >= b.getMinTemperature() && temperature <= b.getMaxTemperature() && moisture >= b.getMinMoisture() && moisture <= b.getMaxMoisture()) {
 				possibleBiomes.add(b);
 			}
@@ -78,18 +100,28 @@ public class GridBiomeSystem extends BiomeSystem {
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
 	}
 	
+	private GridBiomePoint getGridBiome(int gridX, int gridZ, boolean ocean) {
+		try {
+			return biomeCache.get(new GridBiomeCacheKey(ocean, gridX, gridZ));
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			return createGridBiome(gridX, gridZ, ocean);
+		}
+	}
+	
 	@Override
 	public BiomeGenerator getBiome(int x, int z) {
 		int gridX = (int) Math.floor((double) x/gridSize);
 		int gridZ = (int) Math.floor((double) z/gridSize);
 		
 		double heightNoise = generator.getHeightNoise(x, z);
-		List<BiomeEntry> biomes = heightNoise >= 0 ? this.biomes : oceanBiomes;
+		boolean ocean = heightNoise >= 0;
 		
-		GridBiomePoint tl = getGridBiome(gridX, gridZ, biomes);
-		GridBiomePoint tr = getGridBiome(gridX + 1, gridZ, biomes);
-		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1, biomes);
-		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1, biomes);
+		//Get biomes around
+		GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
+		GridBiomePoint tr = getGridBiome(gridX + 1, gridZ, ocean);
+		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1, ocean);
+		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1, ocean);
 		
 		GridBiomePoint biome = null;
 		double distance = Double.MAX_VALUE;
@@ -126,107 +158,71 @@ public class GridBiomeSystem extends BiomeSystem {
 		return BIOMES;
 	}
 	
-	static class GridBiomePoint {
+	static class GridBiomeCacheKey {
+		private boolean ocean;
+		private int gridX;
+		private int gridZ;
 		
-		private CustomBiome biome;
-		private int x;
-		private int z;
-		private double pointWeight;
-		
-		
-		public GridBiomePoint(CustomBiome biome, int x, int z, double pointWeight) {
+		public GridBiomeCacheKey(boolean ocean, int gridX, int gridZ) {
 			super();
-			this.biome = biome;
-			this.x = x;
-			this.z = z;
-			this.pointWeight = pointWeight;
+			this.ocean = ocean;
+			this.gridX = gridX;
+			this.gridZ = gridZ;
 		}
 
-		public double getPointWeight() {
-			return pointWeight;
+		public int getGridX() {
+			return gridX;
+		}
+		public void setGridX(int gridX) {
+			this.gridX = gridX;
+		}
+		public int getGridZ() {
+			return gridZ;
+		}
+		public void setGridZ(int gridZ) {
+			this.gridZ = gridZ;
+		}
+		
+
+		public boolean isOcean() {
+			return ocean;
 		}
 
-		public void setPointWeight(double pointWeight) {
-			this.pointWeight = pointWeight;
+		public void setOcean(boolean ocean) {
+			this.ocean = ocean;
 		}
 
-		public CustomBiome getBiome() {
-			return biome;
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + gridX;
+			result = prime * result + gridZ;
+			result = prime * result + (ocean ? 1231 : 1237);
+			return result;
 		}
 
-		public void setBiome(CustomBiome biome) {
-			this.biome = biome;
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			GridBiomeCacheKey other = (GridBiomeCacheKey) obj;
+			if (gridX != other.gridX)
+				return false;
+			if (gridZ != other.gridZ)
+				return false;
+			if (ocean != other.ocean)
+				return false;
+			return true;
 		}
-
-		public int getX() {
-			return x;
-		}
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-		public int getZ() {
-			return z;
-		}
-
-		public void setZ(int z) {
-			this.z = z;
-		}
+		
 		
 	}
 	
 }
 
-class GridBiomeGenerator implements BiomeGenerator {
 
-	private CustomBiome biome;
-	private int x;
-	private int z;
-	private int startHeight;
-	private int height;
-	private double heightNoise;
-
-	public GridBiomeGenerator(CustomBiome biome, int x, int z, int startHeight, int height, double heightNoise) {
-		super();
-		this.biome = biome;
-		this.x = x;
-		this.z = z;
-		this.startHeight = startHeight;
-		this.height = height;
-		this.heightNoise = heightNoise;
-	}
-
-	@Override
-	public int getBaseHeight() {
-		return height;
-	}
-
-	@Override
-	public void generateNoise(ChunkData data, int x, int z, Random random) {
-		if (height > startHeight) {
-			biome.generateNoise(data, x, z, startHeight, height, heightNoise, random);
-		}
-	}
-
-	@Override
-	public void generateSurface(ChunkData data, int x, int z, Random random) {
-		if (height > startHeight) {
-			biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
-		}
-		
-	}
-
-	@Override
-	public void populate(Chunk chunk, Random random) {
-		if (height > startHeight) {
-			biome.populate(chunk, random);
-		}
-	}
-
-	@Override
-	public Biome getBiome(int y) {
-		return biome.getBiome(x, y, z, height, heightNoise);
-	}
-
-}
