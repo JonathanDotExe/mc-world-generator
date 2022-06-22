@@ -45,7 +45,6 @@ class GridBiomeGenerator implements BiomeGenerator {
 		if (height > startHeight) {
 			biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
 		}
-		
 	}
 
 	@Override

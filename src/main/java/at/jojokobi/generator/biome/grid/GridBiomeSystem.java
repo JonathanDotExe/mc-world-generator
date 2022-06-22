@@ -36,7 +36,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private List<GridBiomeEntry> oceanBiomes = new ArrayList<GridBiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 256;
+	private int gridSize = 64;
 	
 	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
@@ -79,8 +79,8 @@ public class GridBiomeSystem extends BiomeSystem {
 		List<GridBiomeEntry> biomes = ocean ? this.oceanBiomes : this.biomes;
 		//Point position
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
-		int pointX = random.nextInt(gridSize);
-		int pointZ = random.nextInt(gridSize);
+		int pointX = /*random.nextInt(gridSize)*/ gridSize/2;
+		int pointZ = /*random.nextInt(gridSize)*/ gridSize/2;
 		double pointWeight = /*0.5 + random.nextDouble()*/ 1;
 		int x = gridX * gridSize + pointX;
 		int z = gridZ * gridSize + pointZ;
@@ -119,10 +119,18 @@ public class GridBiomeSystem extends BiomeSystem {
 	}
 	
 	private BiomeGenerator createBiome(int x, int z) {
-		int gridX = (int) Math.floor((double) x/gridSize);
-		int gridZ = (int) Math.floor((double) z/gridSize);
+		//Recalc coordinates
+		int gridX = (int) x/gridSize;
+		int gridZ = (int) z/gridSize;
 		
-		double heightNoise = generator.getHeightNoise(x, z);
+		if (x < 0) {
+			gridX--;
+		}
+		if (z < 0) {
+			gridZ--;
+		}
+		
+		double heightNoise = /*generator.getHeightNoise(x, z)*/ 0.5;
 		boolean ocean = heightNoise <= 0;
 		
 		//Get biomes around
@@ -131,6 +139,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1, ocean);
 		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1, ocean);
 		
+		//Find nearest biome
 		GridBiomePoint biome = null;
 		double distance = Double.MAX_VALUE;
 		double heightFactor = 0.0;
@@ -143,11 +152,12 @@ public class GridBiomeSystem extends BiomeSystem {
 				biome = p;
 			}
 			//Height factor
-			double dstRamp = (0.5 * gridSize)/Math.max(0.000001, d);
+			double dstRamp = (0.25 * gridSize)/Math.max(0.000001, d);
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
 		heightFactor /= totalDistance;
+		
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
