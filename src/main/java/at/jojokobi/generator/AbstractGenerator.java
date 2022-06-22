@@ -26,8 +26,8 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 
 	public AbstractGenerator() {
 		this.biomeSystemCache = CacheBuilder.newBuilder()
-			.maximumSize(10000)
-			.expireAfterAccess(3, TimeUnit.MINUTES)
+			.maximumSize(500)
+			.expireAfterAccess(10, TimeUnit.MINUTES)
 			.build(new CacheLoader<UUID, BiomeSystem>() {
 				@Override
 				public BiomeSystem load(UUID key) throws Exception {

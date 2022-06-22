@@ -40,18 +40,28 @@ public class GridBiomeSystem extends BiomeSystem {
 	
 	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
+	private LoadingCache<GeneratorCacheKey, BiomeGenerator> generatorCache;
 
 	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
 		super();
 		this.seed = seed;
 		this.generator = new NoiseValueGenerator(seed, minHeight, maxHeight);
 		this.biomeCache = CacheBuilder.newBuilder()
-				.maximumSize(10000)
+				.maximumSize(1000)
 				.expireAfterAccess(3, TimeUnit.MINUTES)
 				.build(new CacheLoader<GridBiomeCacheKey, GridBiomePoint>() {
 					@Override
 					public GridBiomePoint load(GridBiomeCacheKey key) throws Exception {
 						return createGridBiome(key.getGridX(), key.getGridZ(), key.isOcean());
+					}
+				});
+		this.generatorCache = CacheBuilder.newBuilder()
+				.maximumSize(10000)
+				.expireAfterWrite(30, TimeUnit.SECONDS)
+				.build(new CacheLoader<GeneratorCacheKey, BiomeGenerator>() {
+					@Override
+					public BiomeGenerator load(GeneratorCacheKey key) throws Exception {
+						return createBiome(key.getX(), key.getZ());
 					}
 				});
 	}
@@ -109,8 +119,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		}
 	}
 	
-	@Override
-	public BiomeGenerator getBiome(int x, int z) {
+	private BiomeGenerator createBiome(int x, int z) {
 		int gridX = (int) Math.floor((double) x/gridSize);
 		int gridZ = (int) Math.floor((double) z/gridSize);
 		
@@ -145,6 +154,16 @@ public class GridBiomeSystem extends BiomeSystem {
 		int startHeight = generator.getStartHeight(x, z);
 		
 		return new GridBiomeGenerator(biome.getBiome(), x, z, startHeight, height, heightNoise);
+	}
+	
+	@Override
+	public BiomeGenerator getBiome(int x, int z) {
+		try {
+			return generatorCache.get(new GeneratorCacheKey(x, z));
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			return createBiome(x, z);
+		}
 	}
 	
 	@Override
@@ -216,6 +235,53 @@ public class GridBiomeSystem extends BiomeSystem {
 			if (gridZ != other.gridZ)
 				return false;
 			if (ocean != other.ocean)
+				return false;
+			return true;
+		}
+		
+		
+	}
+	
+	static class GeneratorCacheKey {
+		private int x;
+		private int z;
+		public GeneratorCacheKey(int x, int z) {
+			super();
+			this.x = x;
+			this.z = z;
+		}
+		public int getX() {
+			return x;
+		}
+		public void setX(int x) {
+			this.x = x;
+		}
+		public int getZ() {
+			return z;
+		}
+		public void setZ(int z) {
+			this.z = z;
+		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + x;
+			result = prime * result + z;
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			GeneratorCacheKey other = (GeneratorCacheKey) obj;
+			if (x != other.x)
+				return false;
+			if (z != other.z)
 				return false;
 			return true;
 		}
