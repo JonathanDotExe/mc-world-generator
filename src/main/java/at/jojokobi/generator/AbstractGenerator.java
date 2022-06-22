@@ -1,10 +1,18 @@
 package at.jojokobi.generator;
 
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
@@ -14,7 +22,19 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 	public static final int CHUNK_SIZE = 16;
 	public static final int WATER_HEIGHT = 64;
 	
-	//private Map<UUID, BiomeSystem> systems = new HashMap<UUID, BiomeSystem>();
+	private LoadingCache<UUID, BiomeSystem> biomeSystemCache;
+
+	public AbstractGenerator() {
+		this.biomeSystemCache = CacheBuilder.newBuilder()
+			.maximumSize(10000)
+			.expireAfterAccess(3, TimeUnit.MINUTES)
+			.build(new CacheLoader<UUID, BiomeSystem>() {
+				@Override
+				public BiomeSystem load(UUID key) throws Exception {
+					return createBiomeSystem(Bukkit.getWorld(key)); //FIXME world might not be available now?
+				}
+			});
+	}
 	
 	@Override
 	public void generateNoise(WorldInfo world, Random random, int x, int z, ChunkData data) {
@@ -24,7 +44,6 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 			for (int j = 0; j < CHUNK_SIZE; j++) {
 				int totalX = x*CHUNK_SIZE + i;
 				int totalZ = z*CHUNK_SIZE + j;
-				//Calc Height
 				BiomeGenerator biome = system.getBiome(totalX, totalZ);
 				biome.generateNoise(data, i, j, random);
 			}
@@ -39,7 +58,6 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 			for (int j = 0; j < CHUNK_SIZE; j++) {
 				int totalX = x*CHUNK_SIZE + i;
 				int totalZ = z*CHUNK_SIZE + j;
-				//Calc Height
 				BiomeGenerator biome = system.getBiome(totalX, totalZ);
 				biome.generateSurface(data, i, j, random);
 			}
@@ -47,20 +65,13 @@ public abstract class AbstractGenerator extends ChunkGenerator implements BiomeS
 	}
 	
 	public BiomeSystem getBiomeSystem(WorldInfo world) {
-		/*if (!systems.containsKey(world.getUID())) {
-			systems.put(world.getUID(), createBiomeSystem(world));
+		try {
+			return biomeSystemCache.get(world.getUID());
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			return createBiomeSystem(world);
 		}
-		return systems.get(world.getUID());*/
-		return createBiomeSystem(world);
 	}
-	
-	/*
-	@Override
-	public int getBaseHeight(WorldInfo world, Random random, int x, int z, HeightMap heightMap) {
-		BiomeSystem system = getBiomeSystem(world);
-		BiomeGenerator biome = system.getBiome(x, z);
-		return biome.getBaseHeight();
-	}*/
 	
 	@Override
 	public BiomeProvider getDefaultBiomeProvider(WorldInfo world) {

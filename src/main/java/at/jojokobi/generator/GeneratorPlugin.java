@@ -7,8 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class GeneratorPlugin extends JavaPlugin implements Listener{
 
+	private CustomGenerator generator;
+	
 	public GeneratorPlugin() {
-		
+		generator = new CustomGenerator();
 	}
 	
 	@Override
@@ -24,19 +26,7 @@ public class GeneratorPlugin extends JavaPlugin implements Listener{
 	
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-		return new CustomGenerator();
+		return generator;
 	}
-	
-//	@EventHandler
-//	public void onPlayerInteract (PlayerInteractEvent event) {
-//		if (event.hasBlock()) {
-//			NoiseGenerator gen = new SimplexNoiseGenerator(event.getClickedBlock().getWorld().getSeed() + 486);
-//			int totalX = event.getClickedBlock().getLocation().getBlockX();
-//			int y = event.getClickedBlock().getLocation().getBlockY();
-//			int totalZ = event.getClickedBlock().getLocation().getBlockZ();
-//			double noise = gen.noise(totalX * 0.05, y * 0.05, totalZ * 0.05);
-//			event.getPlayer().sendMessage("Noise: " + noise);
-//		}
-//	}
 
 }

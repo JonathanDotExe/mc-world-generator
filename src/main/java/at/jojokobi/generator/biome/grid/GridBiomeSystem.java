@@ -38,7 +38,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private long seed;
 	private int gridSize = 256;
 	
-	//Cahce for saving already generated biomes
+	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
 
 	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
