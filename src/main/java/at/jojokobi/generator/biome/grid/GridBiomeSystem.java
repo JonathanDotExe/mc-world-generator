@@ -2,6 +2,7 @@ package at.jojokobi.generator.biome.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -74,7 +75,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		oceanBiomes.add(biome);
 	}
 	
-	private GridBiomePoint createGridBiome(int gridX, int gridZ, boolean ocean) {
+	private GridBiomePoint createGridBiomeNoRadius(int gridX, int gridZ, boolean ocean) {
 		//Biomes list
 		List<GridBiomeEntry> biomes = ocean ? this.oceanBiomes : this.biomes;
 		//Point position
@@ -107,6 +108,34 @@ public class GridBiomeSystem extends BiomeSystem {
 		double noise = (gen.noise(factor * gridX, factor * gridZ) * 0.5 + 0.5) * 0.99999;
 		biome = possibleBiomes.get((int) (noise * (possibleBiomes.size())));
 		return new GridBiomePoint(biome.getBiome(), x, z, pointWeight);
+	}
+	
+	private GridBiomePoint createGridBiome(int gridX, int gridZ, boolean ocean) {
+		GridBiomePoint point = createGridBiomeNoRadius(gridX, gridZ, ocean);
+		//Neighboring points
+		List<GridBiomePoint> neighbors = Arrays.asList(
+				createGridBiomeNoRadius(gridX - 1, gridZ - 1, ocean),
+				createGridBiomeNoRadius(gridX - 1, gridZ, ocean),
+				createGridBiomeNoRadius(gridX, gridZ - 1, ocean),
+				createGridBiomeNoRadius(gridX - 1, gridZ + 1, ocean),
+				createGridBiomeNoRadius(gridX, gridZ + 1, ocean),
+				createGridBiomeNoRadius(gridX + 1, gridZ + 1, ocean),
+				createGridBiomeNoRadius(gridX + 1, gridZ - 1, ocean),
+				createGridBiomeNoRadius(gridX + 1, gridZ, ocean)); //TODO optimize recreating biome points
+		//Find radiuses
+		double innerRadius = Double.MAX_VALUE;
+		double outerRadius = 0.0;
+		for (GridBiomePoint p : neighbors) {
+			double distance = Math.sqrt(Math.pow(p.getX() - point.getX(), 2) + Math.pow(p.getZ() - point.getZ(), 2)); //TODO avoid sqrt
+			double radius = distance * 0.5 * point.getPointWeight()/p.getPointWeight();
+			if (radius < innerRadius) {
+				innerRadius = radius;
+			}
+			if (radius > outerRadius) {
+				outerRadius = radius;
+			}
+		}
+		return point;
 	}
 	
 	private GridBiomePoint getGridBiome(int gridX, int gridZ, boolean ocean) {
@@ -157,7 +186,6 @@ public class GridBiomeSystem extends BiomeSystem {
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
 		heightFactor /= totalDistance;
-		
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
