@@ -2,7 +2,6 @@ package at.jojokobi.generator.biome.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -21,6 +20,7 @@ import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.NoiseValueGenerator;
 import at.jojokobi.generator.biome.ValueGenerator;
+import at.jojokobi.mcutil.VectorUtil;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class GridBiomeSystem extends BiomeSystem {
@@ -174,18 +174,25 @@ public class GridBiomeSystem extends BiomeSystem {
 		double heightFactor = 0.0;
 		double totalDistance = 0.0;
 		for (GridBiomePoint p : Arrays.asList(tl, tr,bl, br)) {
-			double d = Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2);
-			d *= p.getPointWeight();
-			if (d < distance) {
-				distance = d;
+			double d = Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2));  //TODO remove sqrt
+			double dw = d * p.getPointWeight();
+			if (dw < distance) {
+				distance = dw;
 				biome = p;
 			}
 			//Height factor
-			double dstRamp = (0.25 * gridSize)/Math.max(0.000001, Math.sqrt(d)); //TODO remove sqrt
+			double startD = p.getInnerRadius() * 0.8;
+			double endD = p.getOuterRadius();
+			double dstRamp = 1 - Math.max(0, Math.min(1, (distance - startD)/(endD - startD)));
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
-		heightFactor /= totalDistance;
+		if (totalDistance > 0) {
+			heightFactor /= totalDistance;
+		}
+		else {
+			heightFactor = 1; //Shouldn't happen in practice
+		}
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
