@@ -20,7 +20,6 @@ import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.NoiseValueGenerator;
 import at.jojokobi.generator.biome.ValueGenerator;
-import at.jojokobi.mcutil.VectorUtil;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class GridBiomeSystem extends BiomeSystem {
@@ -135,6 +134,9 @@ public class GridBiomeSystem extends BiomeSystem {
 				outerRadius = radius;
 			}
 		}
+		point.setInnerRadius(innerRadius);
+		point.setOuterRadius(outerRadius);
+		System.out.println(innerRadius + "/" + outerRadius);
 		return point;
 	}
 	
@@ -183,15 +185,18 @@ public class GridBiomeSystem extends BiomeSystem {
 			//Height factor
 			double startD = p.getInnerRadius() * 0.8;
 			double endD = p.getOuterRadius();
-			double dstRamp = 1 - Math.max(0, Math.min(1, (distance - startD)/(endD - startD)));
+			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ startD/d;
+			//System.out.println(startD + "/" + endD + "/" + dstRamp);
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
 		if (totalDistance > 0) {
 			heightFactor /= totalDistance;
+			//System.out.println("Height factor " + heightFactor);
 		}
 		else {
 			heightFactor = 1; //Shouldn't happen in practice
+			//System.out.println("Sum is " + 0);
 		}
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
