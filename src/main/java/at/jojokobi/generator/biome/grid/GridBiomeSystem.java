@@ -36,7 +36,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private List<GridBiomeEntry> oceanBiomes = new ArrayList<GridBiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 64;
+	private int gridSize = 128;
 	
 	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
@@ -79,9 +79,9 @@ public class GridBiomeSystem extends BiomeSystem {
 		List<GridBiomeEntry> biomes = ocean ? this.oceanBiomes : this.biomes;
 		//Point position
 		Random random = new Random(TerrainGenUtil.generateValueBasedSeed(seed, gridX, 0, gridZ));
-		int pointX = /*random.nextInt(gridSize)*/ gridSize/2;
-		int pointZ = /*random.nextInt(gridSize)*/ gridSize/2;
-		double pointWeight = /*0.5 + random.nextDouble()*/ 1;
+		int pointX = random.nextInt(gridSize);
+		int pointZ = random.nextInt(gridSize);
+		double pointWeight = 0.5 + random.nextDouble();
 		int x = gridX * gridSize + pointX;
 		int z = gridZ * gridSize + pointZ;
 		
@@ -160,22 +160,10 @@ public class GridBiomeSystem extends BiomeSystem {
 			gridZ--;
 		}
 		
-		double heightNoise = /*generator.getHeightNoise(x, z)*/ 0.5;
+		double heightNoise = generator.getHeightNoise(x, z);
 		boolean ocean = heightNoise <= 0;
 		
 		//Get biomes around
-		/*GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
-		int xAdd = 1;
-		if (x < tl.getX()) {
-			xAdd = -1;
-		}
-		int zAdd = 1;
-		if (z < tl.getZ()) {
-			zAdd = -1;
-		}
-		GridBiomePoint tr = getGridBiome(gridX + xAdd, gridZ, ocean);
-		GridBiomePoint bl = getGridBiome(gridX, gridZ + zAdd, ocean);
-		GridBiomePoint br = getGridBiome(gridX + xAdd, gridZ + zAdd, ocean);*/
 		List<GridBiomePoint> points = new ArrayList<>();
 		points.add(getGridBiome(gridX, gridZ, ocean));
 		points.add(getGridBiome(gridX, gridZ + 1, ocean));
