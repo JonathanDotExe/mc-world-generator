@@ -166,9 +166,17 @@ public class GridBiomeSystem extends BiomeSystem {
 		
 		//Get biomes around
 		GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
-		GridBiomePoint tr = getGridBiome(gridX + 1, gridZ, ocean);
-		GridBiomePoint bl = getGridBiome(gridX, gridZ + 1, ocean);
-		GridBiomePoint br = getGridBiome(gridX + 1, gridZ + 1, ocean);
+		int xAdd = 1;
+		if (x < tl.getX()) {
+			xAdd = -1;
+		}
+		int zAdd = 1;
+		if (z < tl.getZ()) {
+			zAdd = 1;
+		}
+		GridBiomePoint tr = getGridBiome(gridX + xAdd, gridZ, ocean);
+		GridBiomePoint bl = getGridBiome(gridX, gridZ + zAdd, ocean);
+		GridBiomePoint br = getGridBiome(gridX + xAdd, gridZ + zAdd, ocean);
 		
 		//Find nearest biome
 		GridBiomePoint biome = null;
@@ -185,18 +193,15 @@ public class GridBiomeSystem extends BiomeSystem {
 			//Height factor
 			double startD = p.getInnerRadius() * 0.8;
 			double endD = p.getOuterRadius();
-			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ startD/d;
-			//System.out.println(startD + "/" + endD + "/" + dstRamp);
+			double dstRamp = 1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)));
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
 		if (totalDistance > 0) {
 			heightFactor /= totalDistance;
-			//System.out.println("Height factor " + heightFactor);
 		}
 		else {
 			heightFactor = 1; //Shouldn't happen in practice
-			//System.out.println("Sum is " + 0);
 		}
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
