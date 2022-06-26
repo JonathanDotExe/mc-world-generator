@@ -136,7 +136,6 @@ public class GridBiomeSystem extends BiomeSystem {
 		}
 		point.setInnerRadius(innerRadius);
 		point.setOuterRadius(outerRadius);
-		System.out.println(innerRadius + "/" + outerRadius);
 		return point;
 	}
 	
@@ -165,25 +164,35 @@ public class GridBiomeSystem extends BiomeSystem {
 		boolean ocean = heightNoise <= 0;
 		
 		//Get biomes around
-		GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
+		/*GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
 		int xAdd = 1;
 		if (x < tl.getX()) {
 			xAdd = -1;
 		}
 		int zAdd = 1;
 		if (z < tl.getZ()) {
-			zAdd = 1;
+			zAdd = -1;
 		}
 		GridBiomePoint tr = getGridBiome(gridX + xAdd, gridZ, ocean);
 		GridBiomePoint bl = getGridBiome(gridX, gridZ + zAdd, ocean);
-		GridBiomePoint br = getGridBiome(gridX + xAdd, gridZ + zAdd, ocean);
+		GridBiomePoint br = getGridBiome(gridX + xAdd, gridZ + zAdd, ocean);*/
+		List<GridBiomePoint> points = new ArrayList<>();
+		points.add(getGridBiome(gridX, gridZ, ocean));
+		points.add(getGridBiome(gridX, gridZ + 1, ocean));
+		points.add(getGridBiome(gridX, gridZ - 1, ocean));
+		points.add(getGridBiome(gridX + 1, gridZ, ocean));
+		points.add(getGridBiome(gridX + 1, gridZ + 1, ocean));
+		points.add(getGridBiome(gridX + 1, gridZ - 1, ocean));
+		points.add(getGridBiome(gridX - 1, gridZ, ocean));
+		points.add(getGridBiome(gridX - 1, gridZ + 1, ocean));
+		points.add(getGridBiome(gridX - 1, gridZ - 1, ocean));
 		
 		//Find nearest biome
 		GridBiomePoint biome = null;
 		double distance = Double.MAX_VALUE;
 		double heightFactor = 0.0;
 		double totalDistance = 0.0;
-		for (GridBiomePoint p : Arrays.asList(tl, tr,bl, br)) {
+		for (GridBiomePoint p : points) {
 			double d = Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2));  //TODO remove sqrt
 			double dw = d * p.getPointWeight();
 			if (dw < distance) {
@@ -193,7 +202,8 @@ public class GridBiomeSystem extends BiomeSystem {
 			//Height factor
 			double startD = p.getInnerRadius() * 0.8;
 			double endD = p.getOuterRadius();
-			double dstRamp = 1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)));
+			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ (0.7 * gridSize)/Math.max(0.000001, dw);
+			dstRamp *= dstRamp * dstRamp;
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
