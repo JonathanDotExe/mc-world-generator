@@ -10,6 +10,8 @@ public interface ValueGenerator {
 	
 	public int getHeight (double x, double z, double noise);
 	
+	public int getSeaLevel();
+	
 	public default int getStartHeight (double x, double z) {
 		return 0;
 	}

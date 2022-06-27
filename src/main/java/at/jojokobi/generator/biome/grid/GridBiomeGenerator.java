@@ -8,55 +8,52 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.GenerationData;
 
 class GridBiomeGenerator implements BiomeGenerator {
 
 	private CustomBiome biome;
 	private int x;
 	private int z;
-	private int startHeight;
-	private int height;
-	private double heightNoise;
+	private GenerationData data;
 
-	public GridBiomeGenerator(CustomBiome biome, int x, int z, int startHeight, int height, double heightNoise) {
+	public GridBiomeGenerator(CustomBiome biome, int x, int z, GenerationData data) {
 		super();
 		this.biome = biome;
 		this.x = x;
 		this.z = z;
-		this.startHeight = startHeight;
-		this.height = height;
-		this.heightNoise = heightNoise;
+		this.data = data;
 	}
 
 	@Override
 	public int getBaseHeight() {
-		return height;
+		return data.getHeight();
 	}
 
 	@Override
 	public void generateNoise(ChunkData data, int x, int z, Random random) {
-		if (height > startHeight) {
-			biome.generateNoise(data, x, z, startHeight, height, heightNoise, random);
+		if (this.data.getHeight() > this.data.getStartHeight()) {
+			biome.generateNoise(data, x, z, this.data, random);
 		}
 	}
 
 	@Override
 	public void generateSurface(ChunkData data, int x, int z, Random random) {
-		if (height > startHeight) {
-			biome.generateSurface(data, x, z, startHeight, height, heightNoise, random);
+		if (this.data.getHeight() > this.data.getStartHeight()) {
+			biome.generateSurface(data, x, z, this.data, random);
 		}
 	}
 
 	@Override
 	public void populate(Chunk chunk, Random random) {
-		if (height > startHeight) {
+		if (data.getHeight() > data.getHeightMultiplier()) {
 			biome.populate(chunk, random);
 		}
 	}
 
 	@Override
 	public Biome getBiome(int y) {
-		return biome.getBiome(x, y, z, height, heightNoise);
+		return biome.getBiome(x, y, z, data);
 	}
 
 }

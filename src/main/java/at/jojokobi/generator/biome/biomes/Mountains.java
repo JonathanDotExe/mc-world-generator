@@ -21,7 +21,7 @@ public class Mountains implements CustomBiome{
 	
 	@Override
 	public double getHeightMultiplier() {
-		return 1.5;
+		return 1.7;
 	}
 
 	@Override

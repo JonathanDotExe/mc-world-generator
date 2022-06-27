@@ -18,6 +18,7 @@ import com.google.common.cache.LoadingCache;
 
 import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
+import at.jojokobi.generator.biome.GenerationData;
 import at.jojokobi.generator.biome.NoiseValueGenerator;
 import at.jojokobi.generator.biome.ValueGenerator;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
@@ -233,7 +234,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
 		
-		return new GridBiomeGenerator(biome.getBiome(), x, z, startHeight, height, heightNoise);
+		return new GridBiomeGenerator(biome.getBiome(), x, z, new GenerationData(startHeight, height, heightNoise, seed, generator.getSeaLevel(), heightFactor));
 	}
 	
 	@Override

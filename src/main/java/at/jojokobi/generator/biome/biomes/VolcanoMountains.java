@@ -8,6 +8,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.GenerationData;
 
 public class VolcanoMountains implements CustomBiome{
 
@@ -17,15 +18,15 @@ public class VolcanoMountains implements CustomBiome{
 
 	@Override
 	public double getHeightMultiplier() {
-		return 1.7;
+		return 2;
 	}
 	
 	@Override
-	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		for (int y = startHeight; y < height; y++) {
+	public void generateNoise(ChunkData chunk, int x, int z, GenerationData data, Random random) {
+		for (int y = data.getStartHeight(); y < data.getHeight(); y++) {
 			//Lava
-			if (noiseHeight > 0.85) {
-				if (y < height - 3) {
+			if (data.getHeightNoise() * data.getHeightMultiplier() > 1) {
+				if (y < data.getHeight() - 3) {
 					chunk.setBlock(x, y, z, Material.LAVA);
 				}
 			}
@@ -36,11 +37,11 @@ public class VolcanoMountains implements CustomBiome{
 	}
 	
 	@Override
-	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		for (int y = startHeight; y < height; y++) {
+	public void generateSurface(ChunkData chunk, int x, int z, GenerationData data, Random random) {
+		for (int y = data.getStartHeight(); y < data.getHeight(); y++) {
 			//Lava
-			if (noiseHeight > 0.85) {
-				if (y < height - 3) {
+			if (data.getHeightNoise() * data.getHeightMultiplier() > 1) {
+				if (y < data.getHeight() - 3) {
 					chunk.setBlock(x, y, z, Material.LAVA);
 				}
 			}
@@ -50,7 +51,8 @@ public class VolcanoMountains implements CustomBiome{
 		}
 	}
 	
-	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
+	@Override
+	public Biome getBiome(int x, int y, int z, GenerationData data) {
 		return Biome.STONY_PEAKS;
 	}
 
