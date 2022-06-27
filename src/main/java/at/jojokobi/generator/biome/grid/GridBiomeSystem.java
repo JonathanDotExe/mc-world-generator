@@ -37,7 +37,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private List<GridBiomeEntry> oceanBiomes = new ArrayList<GridBiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 512;
+	private int gridSize = 320;
 	
 	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;

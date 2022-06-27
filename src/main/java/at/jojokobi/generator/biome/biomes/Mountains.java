@@ -45,7 +45,7 @@ public class Mountains implements CustomBiome{
 	public void generateSurface(ChunkData chunk, int x, int z, GenerationData data, Random random) {
 		//Snow
 		double noiseHeight = data.getHeightNoise() * data.getHeightMultiplier();
-		if (noiseHeight + random.nextDouble() * 0.2 > 0.2) {
+		if (noiseHeight + random.nextDouble() * 0.1 > 0.8) {
 			chunk.setBlock(x, data.getHeight(), z, Material.SNOW);
 		}
 	}

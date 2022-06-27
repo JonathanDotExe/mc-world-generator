@@ -14,7 +14,7 @@ public class NoiseValueGenerator implements ValueGenerator{
 	private NoiseGenerator moistureGenerator;
 	
 	private double heightMultiplier = 0.0025;
-	private double variationHeightMultiplier = 0.035;
+	private double variationHeightMultiplier = 0.5;
 	private double temperatureMultiplier = 0.0005;
 	private double moistureMultiplier = 0.0005;
 	
