@@ -21,31 +21,31 @@ public class VolcanoMountains implements CustomBiome{
 	}
 	
 	@Override
-	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			//Lava
 			if (noiseHeight > 0.85) {
 				if (y < height - 3) {
-					data.setBlock(x, y, z, Material.LAVA);
+					chunk.setBlock(x, y, z, Material.LAVA);
 				}
 			}
 			else {
-				data.setBlock(x, y, z, Material.STONE);
+				chunk.setBlock(x, y, z, Material.STONE);
 			}
 		}
 	}
 	
 	@Override
-	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			//Lava
 			if (noiseHeight > 0.85) {
 				if (y < height - 3) {
-					data.setBlock(x, y, z, Material.LAVA);
+					chunk.setBlock(x, y, z, Material.LAVA);
 				}
 			}
 			else {
-				data.setBlock(x, y, z, Material.STONE);
+				chunk.setBlock(x, y, z, Material.STONE);
 			}
 		}
 	}

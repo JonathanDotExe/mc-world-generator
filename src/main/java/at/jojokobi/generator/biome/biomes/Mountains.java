@@ -24,28 +24,29 @@ public class Mountains implements CustomBiome{
 	}
 
 	@Override
-	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		for (int y = startHeight; y < height; y++) {
 			if (noiseHeight < 0.6 && y == height - 1) {
-				data.setBlock(x, y, z, Material.GRASS_BLOCK);
+				chunk.setBlock(x, y, z, Material.GRASS_BLOCK);
 			}
 			else if (noiseHeight > 0.6 && y >= height - 5) {
-				data.setBlock(x, y, z, Material.DIRT);
+				chunk.setBlock(x, y, z, Material.DIRT);
 			}
 			else {
-				data.setBlock(x, y, z, Material.STONE);
+				chunk.setBlock(x, y, z, Material.STONE);
 			}
 		}
 	}
 	
 	@Override
-	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		//Snow
 		if (noiseHeight - random.nextDouble() * 0.5 > 0.8) {
-			data.setBlock(x, height, z, Material.SNOW);
+			chunk.setBlock(x, height, z, Material.SNOW);
 		}
 	}
 	
+	@Override
 	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
 		return height > 120 ? Biome.STONY_PEAKS : Biome.MEADOW;
 	}

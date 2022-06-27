@@ -23,21 +23,21 @@ public class Desert implements CustomBiome{
 	}
 
 	@Override
-	public void generateNoise(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 
 		for (int y = startHeight; y < height; y++) {
 			if (y >= height - 5) {
-				data.setBlock(x, y, z, Material.SAND);
+				chunk.setBlock(x, y, z, Material.SAND);
 			} else if (y >= height - 10) {
-				data.setBlock(x, y, z, Material.SANDSTONE);
+				chunk.setBlock(x, y, z, Material.SANDSTONE);
 			} else {
-				data.setBlock(x, y, z, Material.STONE);
+				chunk.setBlock(x, y, z, Material.STONE);
 			}
 		}
 	}
 	
 	@Override
-	public void generateSurface(ChunkData data, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
 		
 	}
 	
