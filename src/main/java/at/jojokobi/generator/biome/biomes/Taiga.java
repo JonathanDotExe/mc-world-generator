@@ -3,9 +3,10 @@ package at.jojokobi.generator.biome.biomes;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.HeightMap;
 import org.bukkit.Material;
+import org.bukkit.TreeType;
 import org.bukkit.block.Biome;
-import org.bukkit.block.data.type.Leaves;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.AbstractGenerator;
@@ -13,17 +14,19 @@ import at.jojokobi.generator.biome.CustomBiome;
 import at.jojokobi.generator.biome.GenerationData;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
-public class Plains implements CustomBiome{
+public class Taiga implements CustomBiome{
+	
+	private static final TreeType[] TREE_TYPES = {TreeType.REDWOOD, TreeType.REDWOOD, TreeType.REDWOOD, TreeType.REDWOOD, TreeType.TALL_REDWOOD};
 
-	public Plains() {
-//		super(0.1, 0.3, 0.4, 0.7, 0.3, 0.6);
-	}
-
-	@Override
-	public double getHeightMultiplier() {
-		return 0.3;
+	public Taiga() {
+//		super(0.1, 0.3, 0.4, 0.7, 0.4, 0.7);
 	}
 	
+	@Override
+	public double getHeightMultiplier() {
+		return 1.2;
+	}
+
 	@Override
 	public void generateNoise(ChunkData chunk, int x, int z, GenerationData data, Random random) {
 		for (int y = data.getStartHeight(); y < data.getHeight(); y++) {
@@ -46,34 +49,37 @@ public class Plains implements CustomBiome{
 	
 	@Override
 	public Biome getBiome(int x, int y, int z, GenerationData data) {
-		return Biome.PLAINS;
+		return Biome.TAIGA;
 	}
 	
 	@Override
 	public void populate(Chunk chunk, Random random) {
+		//Trees
+		{
+			int count = random.nextInt(10);
+			for (int i = 0; i < count; i++) {
+				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
+				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
+				
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);
+			}
+		}
+		//Grass
 		for (int x = 0; x < TerrainGenUtil.CHUNK_WIDTH; x++) {
 			for (int z = 0; z < TerrainGenUtil.CHUNK_LENGTH; z++) {
-				int chance = random.nextInt(256);
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+				int chance = random.nextInt(128);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.MOTION_BLOCKING_NO_LEAVES) + 1;
 				
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
-					if (chance < 20) {
+					if (chance < 10) {
 						chunk.getBlock(x, height, z).setType(Material.GRASS);
 					}
-					else if (chance < 22) {
+					else if (chance < 30) {
 						chunk.getBlock(x, height, z).setType(Material.FERN);
 					}
-					else if (chance < 24) {
-						chunk.getBlock(x, height, z).setType(Material.DANDELION);
-					}
-					else if (chance < 26) {
-						chunk.getBlock(x, height, z).setType(Material.POPPY);
-					}
-					//Bush
-					else if (chance < 27) {
-						Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();
-						leaves.setPersistent(true);
-						chunk.getBlock(x, height, z).setBlockData(leaves);
+					else if (chance < 35) {
+						chunk.getBlock(x, height, z).setType(Material.SWEET_BERRY_BUSH);
 					}
 				}
 			}

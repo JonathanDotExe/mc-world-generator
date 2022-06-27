@@ -11,13 +11,16 @@ import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.BiomeSystem;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
+import at.jojokobi.generator.biome.biomes.DarkForest;
 import at.jojokobi.generator.biome.biomes.Desert;
 import at.jojokobi.generator.biome.biomes.Forest;
 import at.jojokobi.generator.biome.biomes.Jungle;
 import at.jojokobi.generator.biome.biomes.Mountains;
 import at.jojokobi.generator.biome.biomes.Ocean;
 import at.jojokobi.generator.biome.biomes.Plains;
+import at.jojokobi.generator.biome.biomes.Savanna;
 import at.jojokobi.generator.biome.biomes.SnowyPlains;
+import at.jojokobi.generator.biome.biomes.Taiga;
 import at.jojokobi.generator.biome.biomes.VolcanoMountains;
 import at.jojokobi.generator.biome.grid.GridBiomeEntry;
 import at.jojokobi.generator.biome.grid.GridBiomeSystem;
@@ -98,10 +101,13 @@ public class CustomGenerator extends AbstractGenerator{
 		system.registerBiome(new GridBiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6));
 		system.registerBiome(new GridBiomeEntry(new Desert(), 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new GridBiomeEntry(new Mountains(), 0.0, 0.7, 0.0, 0.8));
-		system.registerBiome(new GridBiomeEntry(new VolcanoMountains(), 0.6, 1.0, 0.0, 0.5));
+		system.registerBiome(new GridBiomeEntry(new VolcanoMountains(), 0.5, 1.0, 0.0, 0.5));
 		system.registerBiome(new GridBiomeEntry(new SnowyPlains(), 0.0, 0.5, 0.3, 1.0));
 		system.registerBiome(new GridBiomeEntry(new Forest(), 0.4, 0.7, 0.2, 0.7));
 		system.registerBiome(new GridBiomeEntry(new Jungle(), 0.5, 1.0, 0.5, 1.0));
+		system.registerBiome(new GridBiomeEntry(new Taiga(), 0.1, 0.7, 0.0, 0.7));
+		system.registerBiome(new GridBiomeEntry(new DarkForest(), 0.4, 0.85, 0.35, 0.9));
+		system.registerBiome(new GridBiomeEntry(new Savanna(), 0.5, 1.0, 0.0, 0.6));
 		
 		system.registerOceanBiome(new GridBiomeEntry(new Ocean(), 0.0, 1.0, 0.0, 1.0));
 		system.registerOceanBiome(new GridBiomeEntry(new ArcticOcean(), 0.0, 0.4, 0.0, 1.0));
