@@ -8,11 +8,13 @@ import at.jojokobi.mcutil.VectorUtil;
 public class NoiseValueGenerator implements ValueGenerator{
 	
 	private NoiseGenerator[] heightGenerators = new NoiseGenerator[3];
+	private NoiseGenerator[] variationHeightGenerators = new NoiseGenerator[3];
 	
 	private NoiseGenerator temperatureGenerator;
 	private NoiseGenerator moistureGenerator;
 	
 	private double heightMultiplier = 0.0025;
+	private double variationHeightMultiplier = 0.1;
 	private double temperatureMultiplier = 0.001;
 	private double moistureMultiplier = 0.001;
 	
@@ -25,6 +27,9 @@ public class NoiseValueGenerator implements ValueGenerator{
 		this.maxHeight = maxHeight;
 		for (int i = 0; i < heightGenerators.length; i++) {
 			heightGenerators[i] = new SimplexNoiseGenerator(seed + i * (i % 2 == 0 ? 57 : -82));
+		}
+		for (int i = 0; i < variationHeightGenerators.length; i++) {
+			variationHeightGenerators[i] = new SimplexNoiseGenerator(seed + i * (i % 2 == 0 ? 8612 : -3285));
 		}
 		
 		temperatureGenerator = new SimplexNoiseGenerator(seed + 654);
@@ -49,6 +54,13 @@ public class NoiseValueGenerator implements ValueGenerator{
 		for (int i = 0; i < heightGenerators.length; i++) {
 			multipliers += multiplier;
 			noise += heightGenerators[i].noise(x*heightMultiplier*(1/multiplier), z*heightMultiplier*(1/multiplier)) * multiplier;
+			multiplier *= 0.5;
+		}
+		
+		multiplier = 0.1;
+		for (int i = 0; i < variationHeightGenerators.length; i++) {
+			multipliers += multiplier;
+			noise += variationHeightGenerators[i].noise(x*variationHeightMultiplier*(0.1/multiplier), z*variationHeightMultiplier*(0.1/multiplier)) * multiplier;
 			multiplier *= 0.5;
 		}
 		
@@ -113,6 +125,14 @@ public class NoiseValueGenerator implements ValueGenerator{
 
 	public void setSeaLevel(int seaLevel) {
 		this.seaLevel = seaLevel;
+	}
+
+	public double getVariationHeightMultiplier() {
+		return variationHeightMultiplier;
+	}
+
+	public void setVariationHeightMultiplier(double variationHeightMultiplier) {
+		this.variationHeightMultiplier = variationHeightMultiplier;
 	}
 
 }

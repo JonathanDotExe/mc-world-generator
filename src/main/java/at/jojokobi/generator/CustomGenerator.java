@@ -115,11 +115,6 @@ public class CustomGenerator extends AbstractGenerator{
 	}
 	
 	@Override
-	public boolean shouldGenerateCaves() {
-		return true;
-	}
-	
-	@Override
 	public boolean shouldGenerateMobs() {
 		return true;
 	}

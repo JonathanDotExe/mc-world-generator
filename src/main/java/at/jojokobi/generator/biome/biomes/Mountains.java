@@ -31,7 +31,7 @@ public class Mountains implements CustomBiome{
 			if (noiseHeight < 0.6 && y == data.getHeight() - 1) { //TODO Borders with noise
 				chunk.setBlock(x, y, z, Material.GRASS_BLOCK);
 			}
-			else if (noiseHeight > 0.6 && y >= data.getHeight() - 5) {
+			else if (noiseHeight < 0.6 && y >= data.getHeight() - 5) {
 				chunk.setBlock(x, y, z, Material.DIRT);
 			}
 			else {
