@@ -10,6 +10,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.AbstractGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.GenerationData;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class Mountains implements CustomBiome{
@@ -24,12 +25,13 @@ public class Mountains implements CustomBiome{
 	}
 
 	@Override
-	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-		for (int y = startHeight; y < height; y++) {
-			if (noiseHeight < 0.6 && y == height - 1) {
+	public void generateNoise(ChunkData chunk, int x, int z, GenerationData data, Random random) {
+		double noiseHeight = data.getHeightNoise() * data.getHeightMultiplier();
+		for (int y = data.getStartHeight(); y < data.getHeight(); y++) {
+			if (noiseHeight < 0.6 && y == data.getHeight() - 1) { //TODO Borders with noise
 				chunk.setBlock(x, y, z, Material.GRASS_BLOCK);
 			}
-			else if (noiseHeight > 0.6 && y >= height - 5) {
+			else if (noiseHeight > 0.6 && y >= data.getHeight() - 5) {
 				chunk.setBlock(x, y, z, Material.DIRT);
 			}
 			else {
@@ -39,16 +41,17 @@ public class Mountains implements CustomBiome{
 	}
 	
 	@Override
-	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateSurface(ChunkData chunk, int x, int z, GenerationData data, Random random) {
 		//Snow
+		double noiseHeight = data.getHeightNoise() * data.getHeightMultiplier();
 		if (noiseHeight - random.nextDouble() * 0.5 > 0.8) {
-			chunk.setBlock(x, height, z, Material.SNOW);
+			chunk.setBlock(x, data.getHeight(), z, Material.SNOW);
 		}
 	}
 	
 	@Override
-	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
-		return height > 120 ? Biome.STONY_PEAKS : Biome.MEADOW;
+	public Biome getBiome(int x, int y, int z, GenerationData data) {
+		return data.getHeight() > 100 ? Biome.STONY_PEAKS : Biome.MEADOW;
 	}
 	
 	

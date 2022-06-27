@@ -107,5 +107,20 @@ public class CustomGenerator extends AbstractGenerator{
 		system.registerOceanBiome(new GridBiomeEntry(new ArcticOcean(), 0.0, 0.4, 0.0, 1.0));
 		return system;
 	}
+	
+	@Override
+	public boolean shouldGenerateCaves() {
+		return true;
+	}
+	
+	@Override
+	public boolean shouldGenerateMobs() {
+		return true;
+	}
+	
+	@Override
+	public boolean shouldGenerateStructures() {
+		return true;
+	}
 
 }

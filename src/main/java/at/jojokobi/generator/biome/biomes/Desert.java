@@ -9,6 +9,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import at.jojokobi.generator.AbstractGenerator;
 import at.jojokobi.generator.biome.CustomBiome;
+import at.jojokobi.generator.biome.GenerationData;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class Desert implements CustomBiome{
@@ -23,12 +24,11 @@ public class Desert implements CustomBiome{
 	}
 
 	@Override
-	public void generateNoise(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
-
-		for (int y = startHeight; y < height; y++) {
-			if (y >= height - 5) {
+	public void generateNoise(ChunkData chunk, int x, int z, GenerationData data, Random random) {
+		for (int y = data.getStartHeight(); y < data.getHeight(); y++) {
+			if (y >= data.getHeight() - 5) {
 				chunk.setBlock(x, y, z, Material.SAND);
-			} else if (y >= height - 10) {
+			} else if (y >= data.getHeight() - 10) {
 				chunk.setBlock(x, y, z, Material.SANDSTONE);
 			} else {
 				chunk.setBlock(x, y, z, Material.STONE);
@@ -37,11 +37,12 @@ public class Desert implements CustomBiome{
 	}
 	
 	@Override
-	public void generateSurface(ChunkData chunk, int x, int z, int startHeight, int height, double noiseHeight, Random random) {
+	public void generateSurface(ChunkData chunk, int x, int z, GenerationData data, Random random) {
 		
 	}
 	
-	public Biome getBiome(int x, int y, int z, int height, double heightNoise) {
+	@Override
+	public Biome getBiome(int x, int y, int z, GenerationData data) {
 		return Biome.DESERT;
 	}
 

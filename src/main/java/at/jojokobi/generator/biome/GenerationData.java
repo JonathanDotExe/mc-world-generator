@@ -6,15 +6,19 @@ public class GenerationData {
 	private double heightNoise;
 	private long seed;
 	private int seaLevel;
+	private double heightMultiplier;
 	
 	
-	public GenerationData(int startHeight, int height, double heightNoise, long seed, int seaLevel) {
+	
+	public GenerationData(int startHeight, int height, double heightNoise, long seed, int seaLevel,
+			double heightMultiplier) {
 		super();
 		this.startHeight = startHeight;
 		this.height = height;
 		this.heightNoise = heightNoise;
 		this.seed = seed;
 		this.seaLevel = seaLevel;
+		this.heightMultiplier = heightMultiplier;
 	}
 	public int getStartHeight() {
 		return startHeight;
@@ -46,7 +50,11 @@ public class GenerationData {
 	public void setSeaLevel(int seaLevel) {
 		this.seaLevel = seaLevel;
 	}
-	
-	
+	public double getHeightMultiplier() {
+		return heightMultiplier;
+	}
+	public void setHeightMultiplier(double heightMultiplier) {
+		this.heightMultiplier = heightMultiplier;
+	}
 	
 }
