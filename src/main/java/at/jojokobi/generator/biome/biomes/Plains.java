@@ -3,6 +3,7 @@ package at.jojokobi.generator.biome.biomes;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.HeightMap;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.type.Leaves;
@@ -54,7 +55,7 @@ public class Plains implements CustomBiome{
 		for (int x = 0; x < TerrainGenUtil.CHUNK_WIDTH; x++) {
 			for (int z = 0; z < TerrainGenUtil.CHUNK_LENGTH; z++) {
 				int chance = random.nextInt(256);
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
 				
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					if (chance < 20) {

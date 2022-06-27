@@ -3,6 +3,7 @@ package at.jojokobi.generator.biome.biomes;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.HeightMap;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Biome;
@@ -51,12 +52,12 @@ public class Forest implements CustomBiome{
 	public void populate(Chunk chunk, Random random) {
 		//Trees
 		{
-			int count = random.nextInt(5);
+			int count = random.nextInt(10);
 			for (int i = 0; i < count; i++) {
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
 				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);
 			}
 		}
@@ -67,7 +68,7 @@ public class Forest implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH );
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z) + 1;
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
 				
 				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();

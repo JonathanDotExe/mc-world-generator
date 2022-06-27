@@ -3,6 +3,7 @@ package at.jojokobi.generator.biome.biomes;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.HeightMap;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -55,7 +56,7 @@ public class Desert implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG);
 				boolean broken = false;
 				int cactusHeight = random.nextInt(3);
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
@@ -80,7 +81,7 @@ public class Desert implements CustomBiome{
 				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH);
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
-				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG);
 				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
 					chunk.getBlock(x, height, z).setType(Material.DEAD_BUSH, false);
 				}
