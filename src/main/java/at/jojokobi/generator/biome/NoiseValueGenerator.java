@@ -14,9 +14,9 @@ public class NoiseValueGenerator implements ValueGenerator{
 	private NoiseGenerator moistureGenerator;
 	
 	private double heightMultiplier = 0.0025;
-	private double variationHeightMultiplier = 0.1;
-	private double temperatureMultiplier = 0.001;
-	private double moistureMultiplier = 0.001;
+	private double variationHeightMultiplier = 0.035;
+	private double temperatureMultiplier = 0.0005;
+	private double moistureMultiplier = 0.0005;
 	
 	private int minHeight = 10;
 	private int seaLevel = 64;
@@ -57,10 +57,10 @@ public class NoiseValueGenerator implements ValueGenerator{
 			multiplier *= 0.5;
 		}
 		
-		multiplier = 0.1;
+		multiplier = 0.015;
 		for (int i = 0; i < variationHeightGenerators.length; i++) {
 			multipliers += multiplier;
-			noise += variationHeightGenerators[i].noise(x*variationHeightMultiplier*(0.1/multiplier), z*variationHeightMultiplier*(0.1/multiplier)) * multiplier;
+			noise += variationHeightGenerators[i].noise(x*variationHeightMultiplier*(0.015/multiplier), z*variationHeightMultiplier*(0.015/multiplier)) * multiplier;
 			multiplier *= 0.5;
 		}
 		

@@ -37,7 +37,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private List<GridBiomeEntry> oceanBiomes = new ArrayList<GridBiomeEntry> ();
 	private ValueGenerator generator;
 	private long seed;
-	private int gridSize = 256;
+	private int gridSize = 512;
 	
 	//Cache for saving already generated biomes
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
@@ -113,7 +113,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	private GridBiomePoint createGridBiome(int gridX, int gridZ, boolean ocean) {
 		GridBiomePoint point = createGridBiomeNoRadius(gridX, gridZ, ocean);
 		//Neighboring points
-		List<GridBiomePoint> neighbors = Arrays.asList(
+		/*List<GridBiomePoint> neighbors = Arrays.asList(
 				createGridBiomeNoRadius(gridX - 1, gridZ - 1, ocean),
 				createGridBiomeNoRadius(gridX - 1, gridZ, ocean),
 				createGridBiomeNoRadius(gridX, gridZ - 1, ocean),
@@ -136,7 +136,7 @@ public class GridBiomeSystem extends BiomeSystem {
 			}
 		}
 		point.setInnerRadius(innerRadius);
-		point.setOuterRadius(outerRadius);
+		point.setOuterRadius(outerRadius);*/
 		return point;
 	}
 	
@@ -216,9 +216,7 @@ public class GridBiomeSystem extends BiomeSystem {
 			double d = Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2));  //TODO remove sqrt
 			double dw = d * p.getPointWeight();
 			//Height factor
-			double startD = p.getInnerRadius() * 0.8;
-			double endD = p.getOuterRadius();
-			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ (0.75 * gridSize)/Math.max(0.000001, dw);
+			double dstRamp = (0.75 * gridSize)/Math.max(0.000001, dw);
 			dstRamp *= dstRamp * dstRamp * dstRamp;
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
