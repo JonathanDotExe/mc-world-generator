@@ -164,34 +164,61 @@ public class GridBiomeSystem extends BiomeSystem {
 		boolean ocean = heightNoise <= 0;
 		
 		//Get biomes around
-		List<GridBiomePoint> points = new ArrayList<>();
-		points.add(getGridBiome(gridX, gridZ, ocean));
-		points.add(getGridBiome(gridX, gridZ + 1, ocean));
-		points.add(getGridBiome(gridX, gridZ - 1, ocean));
-		points.add(getGridBiome(gridX + 1, gridZ, ocean));
-		points.add(getGridBiome(gridX + 1, gridZ + 1, ocean));
-		points.add(getGridBiome(gridX + 1, gridZ - 1, ocean));
-		points.add(getGridBiome(gridX - 1, gridZ, ocean));
-		points.add(getGridBiome(gridX - 1, gridZ + 1, ocean));
-		points.add(getGridBiome(gridX - 1, gridZ - 1, ocean));
+		GridBiomePoint tl = getGridBiome(gridX, gridZ, ocean);
+		int xAdd = 1;
+		if (x < tl.getX()) {
+			xAdd = -1;
+		}
+		int zAdd = 1;
+		if (z < tl.getZ()) {
+			zAdd = -1;
+		}
+		GridBiomePoint tr = getGridBiome(gridX + xAdd, gridZ, ocean);
+		GridBiomePoint bl = getGridBiome(gridX, gridZ + zAdd, ocean);
+		GridBiomePoint br = getGridBiome(gridX + xAdd, gridZ + zAdd, ocean);
 		
 		//Find nearest biome
 		GridBiomePoint biome = null;
 		double distance = Double.MAX_VALUE;
-		double heightFactor = 0.0;
-		double totalDistance = 0.0;
-		for (GridBiomePoint p : points) {
-			double d = Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2));  //TODO remove sqrt
+		for (GridBiomePoint p : Arrays.asList(tl, tr, bl, br)) {
+			double d = Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2);
 			double dw = d * p.getPointWeight();
 			if (dw < distance) {
 				distance = dw;
 				biome = p;
 			}
+		}
+		
+		//Height factor
+		int pointGridX = biome.getX()/gridSize;
+		int pointGridZ = biome.getZ()/gridSize;
+		if (biome.getX() < 0) {
+			pointGridX--;
+		}
+		if (biome.getZ() < 0) {
+			pointGridZ--;
+		}
+		List<GridBiomePoint> points = new ArrayList<>();
+		points.add(getGridBiome(pointGridX, pointGridZ, ocean));
+		points.add(getGridBiome(pointGridX, pointGridZ + 1, ocean));
+		points.add(getGridBiome(pointGridX, pointGridZ - 1, ocean));
+		points.add(getGridBiome(pointGridX + 1, pointGridZ, ocean));
+		points.add(getGridBiome(pointGridX + 1, pointGridZ + 1, ocean));
+		points.add(getGridBiome(pointGridX + 1, pointGridZ - 1, ocean));
+		points.add(getGridBiome(pointGridX - 1, pointGridZ, ocean));
+		points.add(getGridBiome(pointGridX - 1, pointGridZ + 1, ocean));
+		points.add(getGridBiome(pointGridX - 1, pointGridZ - 1, ocean));
+		
+		double heightFactor = 0.0;
+		double totalDistance = 0.0;
+		for (GridBiomePoint p : points) {
+			double d = Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(z - p.getZ(), 2));  //TODO remove sqrt
+			double dw = d * p.getPointWeight();
 			//Height factor
 			double startD = p.getInnerRadius() * 0.8;
 			double endD = p.getOuterRadius();
-			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ (0.7 * gridSize)/Math.max(0.000001, dw);
-			dstRamp *= dstRamp * dstRamp;
+			double dstRamp = /*1 - Math.max(0, Math.min(1, (d - startD)/(endD - startD)))*/ (0.75 * gridSize)/Math.max(0.000001, dw);
+			dstRamp *= dstRamp * dstRamp * dstRamp;
 			totalDistance += dstRamp;
 			heightFactor += p.getBiome().getHeightMultiplier() * dstRamp;
 		}
@@ -201,6 +228,7 @@ public class GridBiomeSystem extends BiomeSystem {
 		else {
 			heightFactor = 1; //Shouldn't happen in practice
 		}
+		
 		
 		int height = generator.getHeight(x, z, heightNoise * heightFactor);
 		int startHeight = generator.getStartHeight(x, z);
