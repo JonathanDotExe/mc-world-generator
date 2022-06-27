@@ -7,7 +7,7 @@ import at.jojokobi.mcutil.VectorUtil;
 
 public class NoiseValueGenerator implements ValueGenerator{
 	
-	private NoiseGenerator[] heightGenerators = new NoiseGenerator[5];
+	private NoiseGenerator[] heightGenerators = new NoiseGenerator[3];
 	
 	private NoiseGenerator temperatureGenerator;
 	private NoiseGenerator moistureGenerator;
@@ -45,10 +45,11 @@ public class NoiseValueGenerator implements ValueGenerator{
 	public double getHeightNoise(double x, double z) {
 		double noise = 0;
 		double multipliers = 0;
+		double multiplier = 1;
 		for (int i = 0; i < heightGenerators.length; i++) {
-			double multiplier = (1.0/(1 + i));
 			multipliers += multiplier;
-			noise += heightGenerators[i].noise(x*heightMultiplier*(1+i), z*heightMultiplier*(1+i)) * multiplier;
+			noise += heightGenerators[i].noise(x*heightMultiplier*(1/multiplier), z*heightMultiplier*(1/multiplier)) * multiplier;
+			multiplier *= 0.5;
 		}
 		
 		return noise/multipliers;
