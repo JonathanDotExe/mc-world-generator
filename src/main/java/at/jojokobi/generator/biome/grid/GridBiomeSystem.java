@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
@@ -43,10 +44,10 @@ public class GridBiomeSystem extends BiomeSystem {
 	private LoadingCache<GridBiomeCacheKey, GridBiomePoint> biomeCache;
 	private LoadingCache<GeneratorCacheKey, BiomeGenerator> generatorCache;
 
-	public GridBiomeSystem(long seed, int minHeight, int maxHeight) {
+	public GridBiomeSystem(long seed, Function<Long, NoiseValueGenerator> gen) {
 		super();
 		this.seed = seed;
-		this.generator = new NoiseValueGenerator(seed, minHeight, maxHeight);
+		this.generator = gen.apply(seed);
 		this.biomeCache = CacheBuilder.newBuilder()
 				.maximumSize(1000)
 				.expireAfterAccess(3, TimeUnit.MINUTES)

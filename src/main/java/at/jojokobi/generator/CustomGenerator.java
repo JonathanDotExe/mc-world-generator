@@ -10,6 +10,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
 import at.jojokobi.generator.biome.BiomeSystem;
+import at.jojokobi.generator.biome.NoiseValueGenerator;
 import at.jojokobi.generator.biome.biomes.ArcticOcean;
 import at.jojokobi.generator.biome.biomes.DarkForest;
 import at.jojokobi.generator.biome.biomes.Desert;
@@ -97,7 +98,7 @@ public class CustomGenerator extends AbstractGenerator{
 
 	@Override
 	public BiomeSystem createBiomeSystem(WorldInfo info) {
-		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), Math.max(10, info.getMinHeight()), Math.min(130,  info.getMaxHeight()));
+		GridBiomeSystem system = new GridBiomeSystem(info.getSeed(), s -> new NoiseValueGenerator(s, Math.max(10, info.getMinHeight()), Math.min(150,  info.getMaxHeight())));
 		system.registerBiome(new GridBiomeEntry(new Plains(), 0.0, 0.6, 0.0, 0.6));
 		system.registerBiome(new GridBiomeEntry(new Desert(), 0.5, 1, 0.0, 0.5));
 		system.registerBiome(new GridBiomeEntry(new Mountains(), 0.0, 0.7, 0.0, 0.8));
