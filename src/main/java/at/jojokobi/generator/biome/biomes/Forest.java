@@ -70,7 +70,7 @@ public class Forest implements CustomBiome{
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
 				
-				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (chunk.getBlock(x, height, z).getType() == Material.AIR && height > 0) {
 					Leaves leaves = (Leaves) Material.OAK_LEAVES.createBlockData();
 					leaves.setPersistent(true);
 					chunk.getBlock(x, height, z).setBlockData(leaves, false);

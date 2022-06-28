@@ -59,7 +59,7 @@ public class Desert implements CustomBiome{
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG);
 				boolean broken = false;
 				int cactusHeight = random.nextInt(3);
-				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (height > 0) {
 					for (int j = 0; j <= cactusHeight && !broken; j++) {
 						if (chunk.getBlock(x - 1, height + j, z).getType() == Material.AIR
 								&& chunk.getBlock(x, height + j, z - 1).getType() == Material.AIR

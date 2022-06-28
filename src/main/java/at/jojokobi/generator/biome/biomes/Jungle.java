@@ -70,7 +70,7 @@ public class Jungle implements CustomBiome{
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG) + 1;
 				
-				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (chunk.getBlock(x, height, z).getType() == Material.AIR && height > 0) {
 					Leaves leaves = (Leaves) Material.JUNGLE_LEAVES.createBlockData();
 					leaves.setPersistent(true);
 					chunk.getBlock(x, height, z).setBlockData(leaves, false);
@@ -86,7 +86,7 @@ public class Jungle implements CustomBiome{
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG) + 1;
 				
-				if (chunk.getBlock(x, height, z).getType() == Material.AIR && chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (chunk.getBlock(x, height, z).getType() == Material.AIR && height > 0) {
 					chunk.getBlock(x, height, z).setType(Material.MELON, false);
 				}
 			}

@@ -71,7 +71,7 @@ public class Taiga implements CustomBiome{
 				int chance = random.nextInt(128);
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG) + 1;
 				
-				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (height > 0) {
 					if (chance < 10) {
 						chunk.getBlock(x, height, z).setType(Material.GRASS);
 					}

@@ -85,7 +85,7 @@ public class VolcanoMountains implements CustomBiome{
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG);
-				if (chunk.getBlock(x, height - 1, z).getType() != Material.AIR) {
+				if (height > 0) {
 					switch (random.nextInt(5)) {
 					case 0:
 					case 1:

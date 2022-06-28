@@ -69,7 +69,9 @@ public class SnowyPlains implements CustomBiome{
 				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE, chunk.getZ() * AbstractGenerator.CHUNK_SIZE, HeightMap.OCEAN_FLOOR_WG) + 1;
-				chunk.getBlock(x, height - 1, z).setType(Material.SNOW_BLOCK, false);
+				if (height > 0) {
+					chunk.getBlock(x, height - 1, z).setType(Material.SNOW_BLOCK, false);
+				}
 			}
 		}
 	}
