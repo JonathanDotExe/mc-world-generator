@@ -1,8 +1,6 @@
 package at.jojokobi.generator.populators;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,30 +8,28 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
-import at.jojokobi.generator.BiomeSystemBuilder;
-import at.jojokobi.generator.ValueGenerator;
-import at.jojokobi.generator.ValueGeneratorBuilder;
+import at.jojokobi.generator.AbstractGenerator;
+import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
-import at.jojokobi.generator.biome.CustomBiome;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 
 public class BiomePopulator extends BlockPopulator {
 
+	/*
 	private Set<ChunkLocation> chunks = new HashSet<>();
-	private Set<ChunkLocation> unpopulated = new HashSet<>();
+	private Set<ChunkLocation> unpopulated = new HashSet<>();*/
 
-	private ValueGeneratorBuilder builder;
-	private BiomeSystemBuilder biomeBuilder;
+	private AbstractGenerator generator;
 
-	public BiomePopulator(ValueGeneratorBuilder builder, BiomeSystemBuilder biomeBuilder) {
+
+	public BiomePopulator(AbstractGenerator generator) {
 		super();
-		this.builder = builder;
-		this.biomeBuilder = biomeBuilder;
+		this.generator = generator;
 	}
 
 	@Override
 	public void populate(World world, Random random, Chunk chunk) {
-		unpopulated.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
+		/*unpopulated.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
 		chunks.add(new ChunkLocation(chunk.getX(), chunk.getZ()));
 
 		for (Iterator<ChunkLocation> iter = unpopulated.iterator(); iter.hasNext();) {
@@ -42,19 +38,15 @@ public class BiomePopulator extends BlockPopulator {
 				doPopulate(world, random, chunkLocation.getChunk(world));
 				iter.remove();
 			}
-		}
+		}*/
+		doPopulate(world, random, chunk);
 	}
 
 	private void doPopulate(World world, Random random, Chunk chunk) {
-		ValueGenerator generator = builder.createValueGenerator(world.getSeed());
-		BiomeSystem system = biomeBuilder.createBiomeSystem(world.getSeed());
-
-		if (generator.canPopulate(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
-				chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH)) {
-			CustomBiome biome = system.getBiome(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
-					chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH);
-			biome.populate(chunk, generator, random);
-		}
+		BiomeSystem system = generator.getBiomeSystem(world);
+		BiomeGenerator biome = system.getBiome(chunk.getX() * TerrainGenUtil.CHUNK_WIDTH,
+				chunk.getZ() * TerrainGenUtil.CHUNK_LENGTH);
+		biome.populate(chunk, random);
 	}
 
 }
@@ -86,7 +78,7 @@ class ChunkLocation {
 //		return world.isChunkGenerated(x, z);
 //	}
 
-	public boolean canPopulate(Set<ChunkLocation> chunks) {
+	public boolean canPopulate(Set<ChunkLocation> chunks) { //FIXME
 		return chunks.containsAll(Arrays.asList(getRelative(-1, -1), getRelative(0, -1), getRelative(1, -1),
 				getRelative(-1, 0), getRelative(0, 0), getRelative(1, 0), getRelative(-1, 1), getRelative(0, 1),
 				getRelative(1, 1)));

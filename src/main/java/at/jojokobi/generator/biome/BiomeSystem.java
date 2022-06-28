@@ -4,6 +4,6 @@ import org.bukkit.generator.BiomeProvider;
 
 public abstract class BiomeSystem extends BiomeProvider {
 
-	public abstract CustomBiome getBiome (double x, double z);
+	public abstract BiomeGenerator getBiome (int x, int z);
 	
 }
