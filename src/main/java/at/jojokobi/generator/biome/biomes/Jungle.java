@@ -54,8 +54,8 @@ public class Jungle implements CustomBiome{
 		{
 			int count = random.nextInt(10);
 			for (int i = 0; i < count; i++) {
-				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 2) + 1;
-				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 2) + 1;
+				int x = random.nextInt(TerrainGenUtil.CHUNK_WIDTH - 3) + 1;
+				int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH - 3) + 1;
 				
 				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.WORLD_SURFACE_WG) + 1;
 				chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TREE_TYPES[random.nextInt(TREE_TYPES.length)]);

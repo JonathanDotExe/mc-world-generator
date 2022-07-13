@@ -63,8 +63,29 @@ public class Mountains implements CustomBiome{
 			int z = random.nextInt(TerrainGenUtil.CHUNK_LENGTH);
 			
 			int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
-			chunk.getBlock(x, height, z).setType(Material.AIR);;
+			chunk.getBlock(x, height, z).setType(Material.AIR);
 			chunk.getWorld().generateTree(chunk.getBlock(x, height, z).getLocation(), TreeType.TREE);
+		}
+		for (int x = 0; x < TerrainGenUtil.CHUNK_WIDTH; x++) {
+			for (int z = 0; z < TerrainGenUtil.CHUNK_LENGTH; z++) {
+				int chance = random.nextInt(1024);
+				int height = chunk.getWorld().getHighestBlockYAt(chunk.getX() * AbstractGenerator.CHUNK_SIZE + x, chunk.getZ() * AbstractGenerator.CHUNK_SIZE + z, HeightMap.OCEAN_FLOOR_WG) + 1;
+				
+				if (height > 0 && height < 160) { //FIXME
+					if (chance < 20) {
+						chunk.getBlock(x, height, z).setType(Material.GRASS);
+					}
+					else if (chance < 22) {
+						chunk.getBlock(x, height, z).setType(Material.FERN);
+					}
+					else if (chance < 24) {
+						chunk.getBlock(x, height, z).setType(Material.DANDELION);
+					}
+					else if (chance < 26) {
+						chunk.getBlock(x, height, z).setType(Material.POPPY);
+					}
+				}
+			}
 		}
 	}
 	
