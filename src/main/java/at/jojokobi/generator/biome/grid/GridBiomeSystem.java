@@ -32,6 +32,7 @@ public class GridBiomeSystem extends BiomeSystem {
 	static {
 		BIOMES.addAll(Arrays.asList(Biome.values()));
 		BIOMES.remove(Biome.CUSTOM);
+		BIOMES.remove(Biome.CHERRY_GROVE);
 	}
 	
 	private List<GridBiomeEntry> biomes = new ArrayList<GridBiomeEntry> ();
