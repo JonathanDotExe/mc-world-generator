@@ -59,7 +59,7 @@ public class Plains implements CustomBiome{
 				
 				if (height > 0) {
 					if (chance < 20) {
-						chunk.getBlock(x, height, z).setType(Material.GRASS);
+						chunk.getBlock(x, height, z).setType(Material.SHORT_GRASS);
 					}
 					else if (chance < 22) {
 						chunk.getBlock(x, height, z).setType(Material.FERN);

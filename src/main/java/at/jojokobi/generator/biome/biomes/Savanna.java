@@ -62,7 +62,7 @@ public class Savanna implements CustomBiome{
 				
 				if (height > 0) {
 					if (chance < 20) {
-						chunk.getBlock(x, height, z).setType(Material.GRASS);
+						chunk.getBlock(x, height, z).setType(Material.SHORT_GRASS);
 					}
 				}
 			}
