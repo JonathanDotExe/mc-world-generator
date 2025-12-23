@@ -1,14 +1,16 @@
 package at.jojokobi.generator.biome.height;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.Registry;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
+
+import com.google.common.collect.Lists;
 
 import at.jojokobi.generator.biome.BiomeGenerator;
 import at.jojokobi.generator.biome.BiomeSystem;
@@ -26,8 +28,7 @@ public class HeightBiomeSystem extends BiomeSystem {
 	private static final List<Biome> BIOMES = new ArrayList<>();
 	
 	static {
-		BIOMES.addAll(Arrays.asList(Biome.values()));
-		BIOMES.remove(Biome.CUSTOM);
+		BIOMES.addAll(Lists.newArrayList(Registry.BIOME));
 	}
 
 	public HeightBiomeSystem(ValueGenerator generator, long seed) {
